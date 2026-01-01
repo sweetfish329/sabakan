@@ -1,0 +1,207 @@
+name: Deploy Docs to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Create docs directory
+        run: mkdir -p docs
+
+      # Build Storybook
+      - name: Install Frontend Dependencies
+        run: cd frontend && bun install --frozen-lockfile
+
+      - name: Build Storybook
+        run: cd frontend && bun run build-storybook
+
+      - name: Move Storybook to docs
+        run: mv frontend/storybook-static docs/storybook
+
+      # Build TypeDoc (uses typedoc.json config)
+      - name: Build TypeDoc
+        run: |
+          cd frontend
+          bunx typedoc
+
+      # Build GoDoc with pkgsite
+      - name: Generate GoDoc
+        run: |
+          cd backend
+          mkdir -p ../docs/godoc
+          
+          # Generate documentation for each package
+          for pkg in $(go list ./...); do
+            pkg_name=$(basename $pkg)
+            echo "## Package: $pkg_name" >> ../docs/godoc/packages.md
+            echo '```' >> ../docs/godoc/packages.md
+            go doc -all $pkg >> ../docs/godoc/packages.md 2>/dev/null || true
+            echo '```' >> ../docs/godoc/packages.md
+            echo "" >> ../docs/godoc/packages.md
+          done
+          
+          # Create HTML page with styling
+          cat > ../docs/godoc/index.html << 'GODOC_EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sabakan GoDoc</title>
+            <style>
+              :root { --fuji-500: #8B5CF6; --fuji-700: #6D28D9; }
+              body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; background: #1a1a2e; color: #eee; }
+              h1 { color: var(--fuji-500); }
+              h2 { color: var(--fuji-500); border-bottom: 1px solid #333; padding-bottom: 0.5rem; margin-top: 2rem; }
+              pre { background: #16213e; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem; }
+              code { font-family: 'Fira Code', monospace; }
+              a { color: var(--fuji-500); }
+              .back { display: inline-block; margin-bottom: 1rem; padding: 0.5rem 1rem; background: var(--fuji-700); color: white; text-decoration: none; border-radius: 4px; }
+            </style>
+          </head>
+          <body>
+            <a class="back" href="../">← Back to Docs</a>
+            <h1>🐟 Sabakan GoDoc</h1>
+            <p>Go backend API documentation.</p>
+          GODOC_EOF
+          
+          # Convert markdown to HTML-like content
+          for pkg in $(go list ./...); do
+            pkg_name=$(basename $pkg)
+            echo "<h2>$pkg_name</h2>" >> ../docs/godoc/index.html
+            echo "<pre><code>" >> ../docs/godoc/index.html
+            go doc -all $pkg 2>/dev/null | sed 's/</\&lt;/g; s/>/\&gt;/g' >> ../docs/godoc/index.html || true
+            echo "</code></pre>" >> ../docs/godoc/index.html
+          done
+          
+          echo "</body></html>" >> ../docs/godoc/index.html
+
+      # Create index page with Fuji-murasaki theme
+      - name: Create index page
+        run: |
+          cat > docs/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sabakan Documentation</title>
+            <style>
+              :root {
+                --fuji-400: #A78BFA;
+                --fuji-500: #8B5CF6;
+                --fuji-600: #7C3AED;
+                --fuji-700: #6D28D9;
+              }
+              * { box-sizing: border-box; }
+              body {
+                font-family: system-ui, -apple-system, sans-serif;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                color: #fff;
+                min-height: 100vh;
+                margin: 0;
+                padding: 2rem;
+              }
+              .container { max-width: 800px; margin: 0 auto; }
+              h1 {
+                font-size: 3rem;
+                background: linear-gradient(90deg, var(--fuji-400), var(--fuji-600));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 0.5rem;
+              }
+              .subtitle { color: #a0a0a0; font-size: 1.2rem; margin-bottom: 3rem; }
+              .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+              .card {
+                background: rgba(255,255,255,0.05);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 16px;
+                padding: 2rem;
+                text-decoration: none;
+                color: #fff;
+                transition: all 0.3s ease;
+              }
+              .card:hover {
+                transform: translateY(-4px);
+                background: rgba(139, 92, 246, 0.1);
+                border-color: var(--fuji-500);
+                box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+              }
+              .card h2 { margin: 0 0 0.5rem 0; color: var(--fuji-400); }
+              .card p { margin: 0; color: #a0a0a0; font-size: 0.9rem; }
+              .icon { font-size: 2rem; margin-bottom: 1rem; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>🐟 Sabakan</h1>
+              <p class="subtitle">Game container, WebMAP, and MOD management system</p>
+              <div class="links">
+                <a href="./storybook/" class="card">
+                  <div class="icon">📚</div>
+                  <h2>Storybook</h2>
+                  <p>UI component library and design system</p>
+                </a>
+                <a href="./typedoc/" class="card">
+                  <div class="icon">📘</div>
+                  <h2>TypeDoc</h2>
+                  <p>TypeScript frontend documentation</p>
+                </a>
+                <a href="./godoc/" class="card">
+                  <div class="icon">📗</div>
+                  <h2>GoDoc</h2>
+                  <p>Go backend API reference</p>
+                </a>
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build-docs
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

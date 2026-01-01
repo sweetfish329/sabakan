@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+frontend/dist/
+frontend/storybook-static/
+backend/*.exe
+backend/sabakan
+
+# Database
+*.db
+
+# Config (use examples)
+backend/config.toml
+backend/games/*/config.toml
+
+# IDE
+.idea/
+*.sublime-workspace
+
+# System
+.DS_Store
+Thumbs.db
+
+# Angular cache
+frontend/.angular/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log
+
+# Test coverage
+coverage/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

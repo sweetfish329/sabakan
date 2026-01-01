@@ -1,0 +1,40 @@
+# Git
+.git/
+.gitignore
+.github/
+
+# IDE
+.vscode/
+.idea/
+
+# Documentation (build in CI)
+frontend/storybook-static/
+docs/
+
+# Node dependencies (install in container)
+frontend/node_modules/
+frontend/bun.lock
+
+# Development files
+*.md
+!README.md
+
+# Test files
+*_test.go
+*.spec.ts
+**/*.stories.ts
+frontend/src/test-setup.ts
+frontend/vitest.config.ts
+
+# Build cache
+frontend/.angular/
+
+# Config examples (not needed in container)
+*.example.toml
+
+# Database (mount as volume)
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db

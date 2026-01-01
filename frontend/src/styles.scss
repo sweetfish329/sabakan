@@ -1,0 +1,159 @@
+@use '@angular/material' as mat;
+
+// Fuji-murasaki (藤紫) color palette
+// Primary: #8B5CF6 (wisteria purple)
+// The color represents the beautiful wisteria flowers
+
+$fuji-primary: (
+  50: #F5F3FF,
+  100: #EDE9FE,
+  200: #DDD6FE,
+  300: #C4B5FD,
+  400: #A78BFA,
+  500: #8B5CF6,
+  600: #7C3AED,
+  700: #6D28D9,
+  800: #5B21B6,
+  900: #4C1D95,
+  A100: #DDD6FE,
+  A200: #A78BFA,
+  A400: #7C3AED,
+  A700: #6D28D9,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(0, 0, 0, 0.87),
+    A200: rgba(0, 0, 0, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+$fuji-accent: (
+  50: #FDF4FF,
+  100: #FAE8FF,
+  200: #F5D0FE,
+  300: #F0ABFC,
+  400: #E879F9,
+  500: #D946EF,
+  600: #C026D3,
+  700: #A21CAF,
+  800: #86198F,
+  900: #701A75,
+  A100: #F5D0FE,
+  A200: #E879F9,
+  A400: #C026D3,
+  A700: #A21CAF,
+  contrast: (
+    50: rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(0, 0, 0, 0.87),
+    A200: rgba(0, 0, 0, 0.87),
+    A400: white,
+    A700: white,
+  )
+);
+
+// Define palettes
+$primary-palette: mat.m2-define-palette($fuji-primary, 500, 300, 700);
+$accent-palette: mat.m2-define-palette($fuji-accent, 500, 300, 700);
+$warn-palette: mat.m2-define-palette(mat.$m2-red-palette);
+
+// Light theme
+$light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: $warn-palette,
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
+
+// Dark theme
+$dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: $warn-palette,
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: 0,
+));
+
+// Include core styles
+@include mat.core();
+
+// Default to light theme
+@include mat.all-component-themes($light-theme);
+
+// Dark theme class
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+}
+
+// CSS Custom Properties for easy access
+:root {
+  --fuji-50: #F5F3FF;
+  --fuji-100: #EDE9FE;
+  --fuji-200: #DDD6FE;
+  --fuji-300: #C4B5FD;
+  --fuji-400: #A78BFA;
+  --fuji-500: #8B5CF6;
+  --fuji-600: #7C3AED;
+  --fuji-700: #6D28D9;
+  --fuji-800: #5B21B6;
+  --fuji-900: #4C1D95;
+
+  --accent-500: #D946EF;
+
+  // Semantic colors
+  --color-primary: var(--fuji-500);
+  --color-primary-light: var(--fuji-300);
+  --color-primary-dark: var(--fuji-700);
+  --color-accent: var(--accent-500);
+
+  // Surface colors (light mode)
+  --color-background: #FAFAFA;
+  --color-surface: #FFFFFF;
+  --color-text-primary: rgba(0, 0, 0, 0.87);
+  --color-text-secondary: rgba(0, 0, 0, 0.6);
+}
+
+.dark-theme {
+  --color-background: #121212;
+  --color-surface: #1E1E1E;
+  --color-text-primary: rgba(255, 255, 255, 0.87);
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+}
+
+// Global styles
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// Smooth transitions for theme switching
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

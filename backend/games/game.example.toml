@@ -1,0 +1,28 @@
+# Per-Game Configuration Example
+
+[game]
+id = "minecraft-server-1"
+name = "My Minecraft Server"
+description = "A survival server for friends"
+
+[container]
+image = "itzg/minecraft-server:latest"
+ports = ["25565:25565"]
+volumes = ["./data:/data"]
+
+[container.env]
+EULA = "TRUE"
+TYPE = "PAPER"
+MEMORY = "4G"
+
+[[mods]]
+id = "worldedit"
+name = "WorldEdit"
+enabled = true
+path = "./mods/worldedit.jar"
+
+[[mods]]
+id = "essentials"
+name = "EssentialsX"
+enabled = true
+path = "./mods/essentials.jar"

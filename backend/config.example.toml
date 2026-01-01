@@ -1,0 +1,12 @@
+# Sabakan System Configuration
+
+[server]
+host = "0.0.0.0"
+port = 1323
+
+[database]
+path = "./sabakan.db"
+
+[logging]
+level = "info"    # debug, info, warn, error
+format = "text"   # json, text

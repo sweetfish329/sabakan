@@ -1,0 +1,31 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src"],
+  "entryPointStrategy": "expand",
+  "out": "../docs/typedoc",
+  "name": "Sabakan Frontend",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "includeVersion": true,
+  "categorizeByGroup": true,
+  "categoryOrder": ["Components", "Services", "Models", "*"],
+  "sort": ["source-order", "alphabetical"],
+  "visibilityFilters": {
+    "protected": true,
+    "@internal": false
+  },
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  "plugin": [],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.stories.ts",
+    "**/test-setup.ts",
+    "**/node_modules/**"
+  ],
+  "tsconfig": "tsconfig.app.json"
+}

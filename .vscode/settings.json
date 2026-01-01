@@ -1,0 +1,13 @@
+{
+  "oxlint.enable": true,
+  "oxlint.run": "onSave",
+  "oxlint.configPath": "./frontend/.oxlintrc.json",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "oxc.oxlint",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxlint": "explicit"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="ja" datatype="plaintext" original="ng2.template">
+    <body>
+      <!-- Application title -->
+      <trans-unit id="app.title" datatype="html">
+        <source>Sabakan</source>
+        <target>鯖缶</target>
+      </trans-unit>
+
+      <!-- Navigation -->
+      <trans-unit id="nav.home" datatype="html">
+        <source>Home</source>
+        <target>ホーム</target>
+      </trans-unit>
+      <trans-unit id="nav.games" datatype="html">
+        <source>Games</source>
+        <target>ゲーム</target>
+      </trans-unit>
+      <trans-unit id="nav.settings" datatype="html">
+        <source>Settings</source>
+        <target>設定</target>
+      </trans-unit>
+
+      <!-- Common actions -->
+      <trans-unit id="common.save" datatype="html">
+        <source>Save</source>
+        <target>保存</target>
+      </trans-unit>
+      <trans-unit id="common.cancel" datatype="html">
+        <source>Cancel</source>
+        <target>キャンセル</target>
+      </trans-unit>
+      <trans-unit id="common.delete" datatype="html">
+        <source>Delete</source>
+        <target>削除</target>
+      </trans-unit>
+      <trans-unit id="common.edit" datatype="html">
+        <source>Edit</source>
+        <target>編集</target>
+      </trans-unit>
+      <trans-unit id="common.create" datatype="html">
+        <source>Create</source>
+        <target>作成</target>
+      </trans-unit>
+      <trans-unit id="common.start" datatype="html">
+        <source>Start</source>
+        <target>開始</target>
+      </trans-unit>
+      <trans-unit id="common.stop" datatype="html">
+        <source>Stop</source>
+        <target>停止</target>
+      </trans-unit>
+
+      <!-- Game management -->
+      <trans-unit id="game.container" datatype="html">
+        <source>Container</source>
+        <target>コンテナ</target>
+      </trans-unit>
+      <trans-unit id="game.mods" datatype="html">
+        <source>Mods</source>
+        <target>MOD</target>
+      </trans-unit>
+      <trans-unit id="game.status.running" datatype="html">
+        <source>Running</source>
+        <target>実行中</target>
+      </trans-unit>
+      <trans-unit id="game.status.stopped" datatype="html">
+        <source>Stopped</source>
+        <target>停止中</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

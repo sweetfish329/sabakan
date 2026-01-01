@@ -1,0 +1,34 @@
+{
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "warn",
+    "style": "warn",
+    "perf": "warn"
+  },
+  "plugins": ["typescript", "import", "jsdoc", "unicorn", "react"],
+  "rules": {
+    "capitalized-comments": "off",
+    "sort-keys": "off",
+    "new-cap": "off",
+    "unicorn/prefer-top-level-await": "off",
+    "import/no-named-export": "off",
+    "import/prefer-default-export": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "typescript-eslint/consistent-type-imports": "warn"
+      }
+    },
+    {
+      "files": ["*.stories.ts", ".storybook/main.ts", ".storybook/preview.ts"],
+      "rules": {
+        "import/prefer-default-export": "off",
+        "import/no-named-export": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["dist", "storybook-static", "node_modules", "**/*.js"]
+}
