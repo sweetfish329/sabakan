@@ -50,6 +50,7 @@
     "@storybook/addon-links": "^8.0.0",
     "@tsconfig/strictest": "^2.0.8",
     "jsdom": "^27.1.0",
+    "oxfmt": "^0.21.0",
     "oxlint": "^1.36.0",
     "storybook": "^8.0.0",
     "typedoc": "^0.28.15",
