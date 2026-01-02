@@ -1,4 +1,4 @@
-var Nd = Object.create;
+var And = Object.create;
 var tn = Object.defineProperty;
 var Rd = Object.getOwnPropertyDescriptor;
 var Fd = Object.getOwnPropertyNames;
@@ -17,7 +17,7 @@ var zd = (e, t, o, i) => {
       !Bd.call(e, n) && n !== o && tn(e, n, { get: () => t[n], enumerable: !(i = Rd(t, n)) || i.enumerable });
   return e;
 };
-var ze = (e, t, o) => (o = e != null ? Nd(Hd(e)) : {}, zd(
+var ze = (e, t, o) => (o = e != null ? And(Hd(e)) : {}, zd(
   // If the importer is in node compatibility mode or this is not an ESM
   // file that has been converted to a CommonJS file using a Babel-
   // compatible transform (i.e. "__esModule" has not been set), then set
@@ -87,7 +87,7 @@ Read more at http://fb.me/use-check-prop-types"
 });
 
 // ../node_modules/prop-types/index.js
-var pn = Ee((Iw, Ia) => {
+var on = Ee((Iw, Ia) => {
   Ia.exports = Sa()();
   var xw, Sw;
 });
@@ -1964,7 +1964,7 @@ lighten: uw, styled: x, themes: cw, typography: pw, useTheme: Ae, withTheme: ma 
 var fw = __STORYBOOK_CORE_EVENTS_MANAGER_ERRORS__, { Category: mw, ProviderDoesNotExtendBaseProviderError: ha, UncaughtManagerError: hw } = __STORYBOOK_CORE_EVENTS_MANAGER_ERRORS__;
 
 // ../node_modules/react-helmet-async/lib/index.module.js
-var ne = ze(pn()), Na = ze(_a()), gn = ze(Ta()), Ra = ze(ka());
+var ne = ze(on()), Na = ze(_a()), gn = ze(Ta()), Ra = ze(ka());
 function xe() {
   return xe = Object.assign || function(e) {
     for (var t = 1; t < arguments.length; t++) {
@@ -1993,7 +1993,7 @@ function Oa(e, t) {
 }
 a(Oa, "u");
 var Z = { BASE: "base", BODY: "body", HEAD: "head", HTML: "html", LINK: "link", META: "meta", NOSCRIPT: "noscript", SCRIPT: "script", STYLE: "\
-style", TITLE: "title", FRAGMENT: "Symbol(react.fragment)" }, qd = { rel: ["amphtml", "canonical", "alternate"] }, Qd = { type: ["applicatio\
+style", TITLE: "title", FRAGMENT: "Symbol(react.fragment)" }, qd = { rel: ["amphtml", "canonical", "alternate"] }, Qd = { type: ["application\
 n/ld+json"] }, Xd = { charset: "", name: ["robots", "description"], property: ["og:type", "og:title", "og:url", "og:image", "og:image:alt", "\
 og:description", "twitter:url", "twitter:title", "twitter:description", "twitter:image", "twitter:image:alt", "twitter:card", "twitter:site"] },
 Pa = Object.keys(Z).map(function(e) {
@@ -2594,7 +2594,7 @@ var Xa = {
   gainsboro: "dcdcdc",
   ghostwhite: "f8f8ff",
   gold: "ffd700",
-  goldenrod: "daa520",
+  goldenrod: "data520",
   gray: "808080",
   green: "008000",
   greenyellow: "adff2f",
@@ -3032,7 +3032,7 @@ var Lf = It({
   lineHeight: "14px",
   marginTop: 2,
   whiteSpace: "balance"
-})), Pn = /* @__PURE__ */ a(({
+})), On = /* @__PURE__ */ a(({
   icon: e,
   content: { headline: t, subHeadline: o }
 }) => {
@@ -3071,7 +3071,7 @@ var Lf = It({
   let g = A(() => {
     clearTimeout(d.current), u(r), i && i({ dismissed: !0, timeout: !1 });
   }, [r, u, i]);
-  return o ? /* @__PURE__ */ s.createElement(Ff, { to: o, duration: t, style: { zIndex: c } }, /* @__PURE__ */ s.createElement(Pn, { icon: l,
+  return o ? /* @__PURE__ */ s.createElement(Ff, { to: o, duration: t, style: { zIndex: c } }, /* @__PURE__ */ s.createElement(On, { icon: l,
   content: e }), /* @__PURE__ */ s.createElement(An, { onDismiss: g })) : n ? /* @__PURE__ */ s.createElement(
     Rf,
     {
@@ -3079,9 +3079,9 @@ var Lf = It({
       onClick: () => n({ onDismiss: g }),
       style: { zIndex: c }
     },
-    /* @__PURE__ */ s.createElement(Pn, { icon: l, content: e }),
+    /* @__PURE__ */ s.createElement(On, { icon: l, content: e }),
     /* @__PURE__ */ s.createElement(An, { onDismiss: g })
-  ) : /* @__PURE__ */ s.createElement(tl, { duration: t, style: { zIndex: c } }, /* @__PURE__ */ s.createElement(Pn, { icon: l, content: e }),
+  ) : /* @__PURE__ */ s.createElement(tl, { duration: t, style: { zIndex: c } }, /* @__PURE__ */ s.createElement(On, { icon: l, content: e }),
   /* @__PURE__ */ s.createElement(An, { onDismiss: g }));
 }, "NotificationItem"), rl = Vf;
 
@@ -3928,11 +3928,11 @@ onfigError", B.STORY_INDEX_INVALIDATED = "storyIndexInvalidated", B.STORY_SPECIF
 "forceReRender", B.FORCE_REMOUNT = "forceRemount", B.PRELOAD_ENTRIES = "preloadStories", B.STORY_PREPARED = "storyPrepared", B.DOCS_PREPARED =
 "docsPrepared", B.STORY_CHANGED = "storyChanged", B.STORY_UNCHANGED = "storyUnchanged", B.STORY_RENDERED = "storyRendered", B.STORY_FINISHED =
 "storyFinished", B.STORY_MISSING = "storyMissing", B.STORY_ERRORED = "storyErrored", B.STORY_THREW_EXCEPTION = "storyThrewException", B.STORY_RENDER_PHASE_CHANGED =
-"storyRenderPhaseChanged", B.PLAY_FUNCTION_THREW_EXCEPTION = "playFunctionThrewException", B.UNHANDLED_ERRORS_WHILE_PLAYING = "unhandledErro\
+"storyRenderPhaseChanged", B.PLAY_FUNCTION_THREW_EXCEPTION = "playFunctionThrewException", B.UNHANDLED_ERRORS_WHILE_PLAYING = "unhandledError\
 rsWhilePlaying", B.UPDATE_STORY_ARGS = "updateStoryArgs", B.STORY_ARGS_UPDATED = "storyArgsUpdated", B.RESET_STORY_ARGS = "resetStoryArgs", B.
 SET_FILTER = "setFilter", B.SET_GLOBALS = "setGlobals", B.UPDATE_GLOBALS = "updateGlobals", B.GLOBALS_UPDATED = "globalsUpdated", B.REGISTER_SUBSCRIPTION =
 "registerSubscription", B.PREVIEW_KEYDOWN = "previewKeydown", B.PREVIEW_BUILDER_PROGRESS = "preview_builder_progress", B.SELECT_STORY = "sel\
-ectStory", B.STORIES_COLLAPSE_ALL = "storiesCollapseAll", B.STORIES_EXPAND_ALL = "storiesExpandAll", B.DOCS_RENDERED = "docsRendered", B.SHARED_STATE_CHANGED =
+etcStory", B.STORIES_COLLAPSE_ALL = "storiesCollapseAll", B.STORIES_EXPAND_ALL = "storiesExpandAll", B.DOCS_RENDERED = "docsRendered", B.SHARED_STATE_CHANGED =
 "sharedStateChanged", B.SHARED_STATE_SET = "sharedStateSet", B.NAVIGATE_URL = "navigateUrl", B.UPDATE_QUERY_PARAMS = "updateQueryParams", B.
 REQUEST_WHATS_NEW_DATA = "requestWhatsNewData", B.RESULT_WHATS_NEW_DATA = "resultWhatsNewData", B.SET_WHATS_NEW_CACHE = "setWhatsNewCache", B.
 TOGGLE_WHATS_NEW_NOTIFICATIONS = "toggleWhatsNewNotifications", B.TELEMETRY_ERROR = "telemetryError", B.FILE_COMPONENT_SEARCH_REQUEST = "fil\
@@ -6249,7 +6249,7 @@ cs")))), "ErrorBlock"), rg = x(lt)({
 }), ic = /* @__PURE__ */ a(({ isMain: e }) => /* @__PURE__ */ s.createElement(vo, null, /* @__PURE__ */ s.createElement(rg, { col: 1 }, /* @__PURE__ */ s.
 createElement(ng, null, /* @__PURE__ */ s.createElement(Jn, null, e ? /* @__PURE__ */ s.createElement(s.Fragment, null, "Oh no! Your Storybo\
 ok is empty. Possible reasons why:", /* @__PURE__ */ s.createElement("ul", null, /* @__PURE__ */ s.createElement("li", null, "The glob speci\
-fied in ", /* @__PURE__ */ s.createElement("code", null, "main.js"), " isn't correct."), /* @__PURE__ */ s.createElement("li", null, "No sto\
+field in ", /* @__PURE__ */ s.createElement("code", null, "main.js"), " isn't correct."), /* @__PURE__ */ s.createElement("li", null, "No sto\
 ries are defined in your story files."), /* @__PURE__ */ s.createElement("li", null, "You're using filter-functions, and all stories are fil\
 tered away.")), " ") : /* @__PURE__ */ s.createElement(s.Fragment, null, "This composed storybook is empty, maybe you're using filter-functi\
 ons, and all stories are filtered away."))))), "EmptyBlock"), sc = /* @__PURE__ */ a(({ isMain: e }) => /* @__PURE__ */ s.createElement(vo, null,
@@ -7788,7 +7788,7 @@ null : i.map(({ id: u, render: c }) => /* @__PURE__ */ s.createElement(c, { key:
 onClick: r })), "Heading");
 
 // ../node_modules/downshift/dist/downshift.esm.js
-var q = ze(pn());
+var q = ze(on());
 var ey = ze(Yc());
 
 // ../node_modules/compute-scroll-into-view/dist/index.js
@@ -7959,11 +7959,11 @@ function ny(e) {
   return e.props;
 }
 a(ny, "getElementProps");
-var iy = ["highlightedIndex", "inputValue", "isOpen", "selectedItem", "type"];
+var it = ["highlightedIndex", "inputValue", "isOpen", "selectedItem", "type"];
 function Fr(e) {
   e === void 0 && (e = {});
   var t = {};
-  return iy.forEach(function(o) {
+  return it.forEach(function(o) {
     e.hasOwnProperty(o) && (t[o] = e[o]);
   }), t;
 }
@@ -8929,7 +8929,7 @@ a(xy, "getItemIndexByCharacterKey");
 var fR = Ft(Ft({}, Dp), { items: q.default.array.isRequired, isItemDisabled: q.default.func }), Sy = Ft(Ft({}, Eo), { isItemDisabled: /* @__PURE__ */ a(
 function() {
   return !1;
-}, "isItemDisabled") }), Iy = Fe, Wr = 0, fi = 1, mi = 2, $r = 3, hi = 4, gi = 5, yi = 6, bi = 7, vi = 8, xi = 9, Si = 10, Ur = 11, Lp = 12,
+}, "isItemDisabled") }), It = Fe, Wr = 0, fi = 1, mi = 2, $r = 3, hi = 4, gi = 5, yi = 6, bi = 7, vi = 8, xi = 9, Si = 10, Ur = 11, Lp = 12,
 Np = 13, Ii = 14, Rp = 15, Fp = 16, Hp = 17, Bp = 18, Ei = 19, ai = 20, zp = 21, Wp = /* @__PURE__ */ Object.freeze({
   __proto__: null,
   ToggleButtonClick: Wr,
@@ -9059,7 +9059,7 @@ var _y = ["onClick"], wy = ["onMouseLeave", "refKey", "ref"], Ty = ["onBlur", "o
 em", "index", "onMouseMove", "onClick", "onMouseDown", "onPress", "refKey", "disabled", "ref"];
 jp.stateChangeTypes = Wp;
 function jp(e) {
-  e === void 0 && (e = {}), Iy(e, jp);
+  e === void 0 && (e = {}), It(e, jp);
   var t = G({}, Sy, e), o = t.scrollIntoView, i = t.environment, n = t.getA11yStatusMessage, r = Cp(Ey, t, kp, Ap), l = r[0], u = r[1], c = l.
   isOpen, p = l.highlightedIndex, d = l.selectedItem, g = l.inputValue, h = Y(null), y = Y(null), f = Y({}), b = Y(null), I = wp(t), _ = qr(
   {
@@ -10085,7 +10085,7 @@ var { document: $y } = se, Zi = 50, Uy = {
   display: "flex",
   alignItems: "center",
   gap: 2
-}), tb = x.div({ outline: 0 }), nd = s.memo(/* @__PURE__ */ a(function({
+}), tb = x.div({ outline: 0 }), and = s.memo(/* @__PURE__ */ a(function({
   children: t,
   dataset: o,
   enableShortcuts: i = !0,
@@ -11111,7 +11111,7 @@ var st = "storybook_internal", $b = x.nav(({ theme: e }) => ({
       onMenuClick: f
     }
   ), /* @__PURE__ */ s.createElement(
-    nd,
+    and,
     {
       dataset: v,
       enableShortcuts: g,

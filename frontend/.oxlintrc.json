@@ -13,7 +13,11 @@
     "new-cap": "off",
     "unicorn/prefer-top-level-await": "off",
     "import/no-named-export": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "import/group-exports": "off",
+    "import/exports-last": "off",
+    "sort-imports": "off",
+    "no-magic-numbers": "off"
   },
   "overrides": [
     {
@@ -25,8 +29,6 @@
     {
       "files": ["*.stories.ts", "frontend/.storybook/main.ts", "frontend/.storybook/preview.ts"],
       "rules": {
-        "import/prefer-default-export": "off",
-        "import/no-named-export": "off"
       }
     }
   ],

@@ -20,5 +20,17 @@
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  }
+  },
+  "oxc.configPath": "./frontend/.oxlintrc.json",
+  "oxc.requireConfig": true,
+  "oxc.tsConfigPath": "./frontend/tsconfig.json",
+  "oxc.typeAware": true,
+  "oxc.path.oxfmt": "./frontend/node_modules/.bin/oxfmt.exe",
+  "oxc.path.oxlint": "./frontend/node_modules/.bin/oxlint.exe",
+  "oxc.path.tsgolint": "./frontend/node_modules/.bin/tsgolint.exe",
+  "vitest.commandLine": "bunx vitest",
+  "vitest.enable": true,
+  "vitest.nodeExecutable": "C:\\Users\\gaelw\\.bun\\bin\\bun.exe",
+  "npm.packageManager": "bun",
+  "npm.scriptRunner": "bun"
 }
