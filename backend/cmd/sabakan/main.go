@@ -43,6 +43,20 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Run database migrations
+	if err := db.Migrate(); err != nil {
+		logger.Error("Failed to run database migrations", "error", err)
+		os.Exit(1)
+	}
+	logger.Info("Database migrations completed")
+
+	// Seed default data
+	if err := db.Seed(); err != nil {
+		logger.Error("Failed to seed database", "error", err)
+		os.Exit(1)
+	}
+	logger.Info("Database seeding completed")
+
 	// Initialize Container Service
 	containerService := container.NewService(cfg.Podman.SocketPath)
 	logger.Info("Container service initialized", "socket", cfg.Podman.SocketPath)
@@ -53,4 +67,3 @@ func main() {
 	logger.Info("Starting server", "address", addr)
 	s.Logger.Fatal(s.Start(addr))
 }
-

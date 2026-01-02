@@ -60,12 +60,83 @@
 
 # Workflow
 
-- **Planning**: ALWAYS create/update an `implementation_plan.md` before starting complex tasks.
-- **TDD**: Adopt a strict Test-Driven Development (TDD) workflow. Write tests *before* implementation.
-- **Incremental Changes**: Make small, verifiable changes. Use formatting commands often.
-- **Verification**: Verify changes by running the build or tests after every significant step.
-- **Checklists**: Use checklists in planning documents to track progress.
-- **Storybook**: Always implement frontend components using Storybook.
+> [!IMPORTANT]
+> **YOU MUST FOLLOW THESE RULES WITHOUT EXCEPTION.**
+
+## Planning Phase (REQUIRED for complex tasks)
+
+1. **ALWAYS** create/update `implementation_plan.md` before starting complex tasks
+2. Ask clarifying questions before coding
+3. Use checklists in planning documents to track progress
+
+## Test-Driven Development (TDD) - MANDATORY
+
+> [!CAUTION]
+> **NEVER write implementation code before tests.** This is a strict requirement.
+
+### Backend (Go) TDD Workflow
+
+```
+1. Write test first → go test ./... (tests FAIL - Red)
+2. Write minimal implementation → go test ./... (tests PASS - Green)
+3. Refactor → go test ./... (tests still PASS)
+4. Commit
+```
+
+**Example prompt pattern:**
+```
+"Write tests for [feature] first. Do NOT write any implementation code yet.
+The tests should verify [expected behavior]. Run the tests and confirm they fail."
+```
+
+### Frontend (Angular) TDD Workflow
+
+```
+1. Create Storybook story first
+2. Write unit test (*.spec.ts) → tests FAIL
+3. Implement component → tests PASS
+4. Verify in Storybook visually
+5. Commit
+```
+
+## Storybook-First Development - MANDATORY
+
+> [!CAUTION]
+> **NEVER create Angular components without Storybook stories.** This is a strict requirement.
+
+### Required Files for Each Component
+
+```
+component-name/
+├── component-name.ts          # Component implementation
+├── component-name.html        # Template
+├── component-name.scss        # Styles
+├── component-name.spec.ts     # Unit tests
+└── component-name.stories.ts  # Storybook stories (REQUIRED)
+```
+
+### Storybook Workflow
+
+1. **Create story file FIRST** with visual states (default, loading, error, etc.)
+2. Run `bun run storybook` to view component in isolation
+3. Implement component to match story expectations
+4. Iterate visually until design is correct
+5. Commit
+
+## Incremental Changes
+
+- Make small, verifiable changes
+- Run `go fmt ./...` (backend) or formatting commands often
+- Run tests after every significant step
+- Commit frequently with meaningful messages
+
+## Verification Checklist (Before Commit)
+
+- [ ] All tests pass (`go test ./...` or `bun run test`)
+- [ ] Code is formatted (`go fmt ./...`)
+- [ ] Storybook stories exist for new components
+- [ ] Build succeeds (`go build ./...` or `bun run build`)
+
 
 # Container Support
 

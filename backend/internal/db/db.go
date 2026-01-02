@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/glebarez/sqlite"
+	"github.com/sweetfish329/sabakan/backend/internal/models"
 	"gorm.io/gorm"
 )
 
@@ -23,7 +24,20 @@ func GetDB() *gorm.DB {
 	return DB
 }
 
-// AutoMigrate runs GORM auto-migration for all provided models.
-func AutoMigrate(models ...any) error {
-	return DB.AutoMigrate(models...)
+// Migrate runs GORM auto-migration for all models.
+func Migrate() error {
+	return DB.AutoMigrate(
+		&models.Role{},
+		&models.Permission{},
+		&models.User{},
+		&models.OAuthAccount{},
+		&models.APIToken{},
+		&models.RefreshToken{},
+		&models.GameServer{},
+		&models.GameServerPort{},
+		&models.GameServerEnv{},
+		&models.Mod{},
+		&models.GameServerMod{},
+		&models.AuditLog{},
+	)
 }
