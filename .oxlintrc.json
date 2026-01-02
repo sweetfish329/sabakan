@@ -23,12 +23,12 @@
       }
     },
     {
-      "files": ["*.stories.ts", ".storybook/main.ts", ".storybook/preview.ts"],
+      "files": ["*.stories.ts", "frontend/.storybook/main.ts", "frontend/.storybook/preview.ts"],
       "rules": {
         "import/prefer-default-export": "off",
         "import/no-named-export": "off"
       }
     }
   ],
-  "ignorePatterns": ["dist", "storybook-static", "node_modules", "**/*.js"]
+  "ignorePatterns": ["frontend/dist", "frontend/storybook-static", "**/node_modules", "**/*.js", "backend/**"]
 }
