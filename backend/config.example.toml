@@ -17,3 +17,19 @@ format = "text"   # json, text
 # For rootless: unix://$XDG_RUNTIME_DIR/podman/podman.sock
 # For remote: tcp://host:port or http://host:port
 socket_path = "unix:///run/podman/podman.sock"
+
+[jwt]
+# IMPORTANT: Change this secret in production!
+secret = "change-this-secret-in-production-32bytes!"
+access_token_expiry = 15    # minutes
+refresh_token_expiry = 7    # days
+
+[redis]
+# Redis connection URL
+# Set to empty string to disable Redis (sessions won't persist across restarts)
+url = "redis://localhost:6379"
+
+[auth]
+# Allow new user registration
+allow_registration = true
+

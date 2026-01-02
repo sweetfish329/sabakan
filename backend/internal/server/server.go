@@ -3,24 +3,38 @@ package server
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	echoMiddleware "github.com/labstack/echo/v4/middleware"
+	"github.com/sweetfish329/sabakan/backend/internal/auth"
+	"github.com/sweetfish329/sabakan/backend/internal/config"
 	"github.com/sweetfish329/sabakan/backend/internal/container"
 	"github.com/sweetfish329/sabakan/backend/internal/handlers"
+	"github.com/sweetfish329/sabakan/backend/internal/middleware"
+	"github.com/sweetfish329/sabakan/backend/internal/redis"
+	"gorm.io/gorm"
 )
 
+// Dependencies holds all the dependencies needed by the server.
+type Dependencies struct {
+	ContainerService *container.Service
+	DB               *gorm.DB
+	Config           *config.SystemConfig
+	SessionStore     redis.SessionStore
+}
+
 // New creates a new Echo server with all middleware and routes configured.
-func New(containerService *container.Service) *echo.Echo {
+func New(deps *Dependencies) *echo.Echo {
 	e := echo.New()
 
 	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	e.Use(echoMiddleware.Logger())
+	e.Use(echoMiddleware.Recover())
+	e.Use(echoMiddleware.CORSWithConfig(echoMiddleware.CORSConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
 	// Health check
@@ -32,14 +46,37 @@ func New(containerService *container.Service) *echo.Echo {
 		return c.JSON(http.StatusOK, map[string]string{"status": "ok"})
 	})
 
-	// Container API routes
+	// Create JWT manager
+	jwtManager := auth.NewJWTManager(
+		deps.Config.JWT.Secret,
+		time.Duration(deps.Config.JWT.AccessTokenExpiry)*time.Minute,
+		time.Duration(deps.Config.JWT.RefreshTokenExpiry)*24*time.Hour,
+	)
+
+	// Create middleware
+	authMiddleware := middleware.NewAuthMiddleware(jwtManager, deps.SessionStore)
+	permMiddleware := middleware.NewPermissionMiddleware(deps.DB)
+
+	// Auth routes (public)
+	authHandler := handlers.NewAuthHandler(deps.DB, jwtManager, deps.SessionStore)
+	authGroup := e.Group("/auth")
+	authGroup.POST("/register", authHandler.Register)
+	authGroup.POST("/login", authHandler.Login)
+	authGroup.POST("/refresh", authHandler.Refresh)
+	authGroup.POST("/logout", authMiddleware.Authenticate(authHandler.Logout))
+
+	// API routes (protected)
 	api := e.Group("/api")
-	containerHandler := handlers.NewContainerHandler(containerService)
-	api.GET("/containers", containerHandler.List)
-	api.GET("/containers/:id", containerHandler.Get)
-	api.POST("/containers/:id/start", containerHandler.Start)
-	api.POST("/containers/:id/stop", containerHandler.Stop)
-	api.GET("/containers/:id/logs", containerHandler.Logs)
+	api.Use(authMiddleware.Authenticate)
+
+	// Container routes
+	containerHandler := handlers.NewContainerHandler(deps.ContainerService)
+	containers := api.Group("/containers")
+	containers.GET("", containerHandler.List, permMiddleware.RequirePermission("game_server", "read"))
+	containers.GET("/:id", containerHandler.Get, permMiddleware.RequirePermission("game_server", "read"))
+	containers.POST("/:id/start", containerHandler.Start, permMiddleware.RequirePermission("game_server", "start"))
+	containers.POST("/:id/stop", containerHandler.Stop, permMiddleware.RequirePermission("game_server", "stop"))
+	containers.GET("/:id/logs", containerHandler.Logs, permMiddleware.RequirePermission("game_server", "read"))
 
 	return e
 }

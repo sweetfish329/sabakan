@@ -18,7 +18,7 @@ type User struct {
 	OAuthAccounts []OAuthAccount `json:"oauthAccounts,omitempty"`
 	APITokens     []APIToken     `json:"-"`
 	RefreshTokens []RefreshToken `json:"-"`
-	GameServers   []GameServer   `json:"gameServers,omitempty"`
+	GameServers   []GameServer   `gorm:"foreignKey:OwnerID" json:"gameServers,omitempty"`
 }
 
 // OAuthAccount represents a linked OAuth provider account.

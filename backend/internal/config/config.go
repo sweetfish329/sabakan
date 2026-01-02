@@ -14,6 +14,9 @@ type SystemConfig struct {
 	Database DatabaseConfig `toml:"database"`
 	Logging  LoggingConfig  `toml:"logging"`
 	Podman   PodmanConfig   `toml:"podman"`
+	JWT      JWTConfig      `toml:"jwt"`
+	Redis    RedisConfig    `toml:"redis"`
+	Auth     AuthConfig     `toml:"auth"`
 }
 
 // ServerConfig contains HTTP server settings.
@@ -39,6 +42,23 @@ type PodmanConfig struct {
 	// For rootful: unix:///run/podman/podman.sock
 	// For rootless: unix://$XDG_RUNTIME_DIR/podman/podman.sock
 	SocketPath string `toml:"socket_path"`
+}
+
+// JWTConfig contains JWT authentication settings.
+type JWTConfig struct {
+	Secret             string `toml:"secret"`               // Secret key for signing tokens
+	AccessTokenExpiry  int    `toml:"access_token_expiry"`  // Access token expiry in minutes
+	RefreshTokenExpiry int    `toml:"refresh_token_expiry"` // Refresh token expiry in days
+}
+
+// RedisConfig contains Redis connection settings.
+type RedisConfig struct {
+	URL string `toml:"url"` // Redis connection URL (redis://host:port)
+}
+
+// AuthConfig contains authentication settings.
+type AuthConfig struct {
+	AllowRegistration bool `toml:"allow_registration"` // Whether to allow new user registration
 }
 
 // GameConfig represents per-game configuration.
@@ -102,6 +122,17 @@ func DefaultSystemConfig() *SystemConfig {
 		},
 		Podman: PodmanConfig{
 			SocketPath: "unix:///run/podman/podman.sock",
+		},
+		JWT: JWTConfig{
+			Secret:             "change-this-secret-in-production-32bytes!",
+			AccessTokenExpiry:  15, // 15 minutes
+			RefreshTokenExpiry: 7,  // 7 days
+		},
+		Redis: RedisConfig{
+			URL: "redis://localhost:6379",
+		},
+		Auth: AuthConfig{
+			AllowRegistration: true,
 		},
 	}
 }

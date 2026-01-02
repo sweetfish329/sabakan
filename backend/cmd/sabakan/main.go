@@ -61,8 +61,16 @@ func main() {
 	containerService := container.NewService(cfg.Podman.SocketPath)
 	logger.Info("Container service initialized", "socket", cfg.Podman.SocketPath)
 
+	// Create server dependencies
+	deps := &server.Dependencies{
+		ContainerService: containerService,
+		DB:               db.GetDB(),
+		Config:           cfg,
+		SessionStore:     nil, // Redis session store (optional, can be nil for now)
+	}
+
 	// Initialize and Start Server
-	s := server.New(containerService)
+	s := server.New(deps)
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
 	logger.Info("Starting server", "address", addr)
 	s.Logger.Fatal(s.Start(addr))
