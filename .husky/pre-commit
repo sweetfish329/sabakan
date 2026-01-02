@@ -1,4 +1,8 @@
 
+# Disable Angular Analytics to prevent interactive prompts
+export NG_CLI_ANALYTICS=false
+
+# Lint Staged
 cd frontend && bunx lint-staged
 "C:\Users\gaelw\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\Scripts\pre-commit.exe" run typos --files src/**/*
 
