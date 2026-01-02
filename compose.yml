@@ -1,16 +1,47 @@
+# Sabakan Container Compose Configuration
+# Use with: podman compose up -d
+
 services:
-  backend:
+  # Development service (default) - for testing container management
+  sabakan-dev:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Containerfile.dev
+    ports:
+      - "1323:1323"   # Backend API
+      - "4200:4200"   # Angular dev server
+      - "6006:6006"   # Storybook
+    privileged: true
+    stdin_open: true
+    tty: true
+
+  # Production service using multi-stage build
+  sabakan:
+    build:
+      context: .
+      dockerfile: Containerfile
     ports:
       - "1323:1323"
     volumes:
-      - ./backend:/app
+      # Mount Podman socket for container management
+      - /run/podman/podman.sock:/run/podman/podman.sock:Z
+      # Persistent data volume
+      - sabakan-data:/data:Z
+      # Configuration file (create from config.example.toml)
+      - ./backend/config.toml:/app/config.toml:ro,Z
     environment:
       - CONFIG_PATH=/app/config.toml
-    command: go run ./cmd/sabakan
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:1323/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - prod
 
+  # Backend-only for testing
   backend-test:
     build:
       context: ./backend
@@ -21,14 +52,5 @@ services:
     profiles:
       - test
 
-  frontend:
-    image: oven/bun:latest
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
-    command: bun run start --host 0.0.0.0
-    ports:
-      - "4200:4200"
-    depends_on:
-      - backend
-
+volumes:
+  sabakan-data:

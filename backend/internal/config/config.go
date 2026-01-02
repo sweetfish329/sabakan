@@ -13,6 +13,7 @@ type SystemConfig struct {
 	Server   ServerConfig   `toml:"server"`
 	Database DatabaseConfig `toml:"database"`
 	Logging  LoggingConfig  `toml:"logging"`
+	Podman   PodmanConfig   `toml:"podman"`
 }
 
 // ServerConfig contains HTTP server settings.
@@ -30,6 +31,14 @@ type DatabaseConfig struct {
 type LoggingConfig struct {
 	Level  string `toml:"level"`  // debug, info, warn, error
 	Format string `toml:"format"` // json, text
+}
+
+// PodmanConfig contains Podman connection settings.
+type PodmanConfig struct {
+	// SocketPath is the path to the Podman socket.
+	// For rootful: unix:///run/podman/podman.sock
+	// For rootless: unix://$XDG_RUNTIME_DIR/podman/podman.sock
+	SocketPath string `toml:"socket_path"`
 }
 
 // GameConfig represents per-game configuration.
@@ -90,6 +99,9 @@ func DefaultSystemConfig() *SystemConfig {
 		Logging: LoggingConfig{
 			Level:  "info",
 			Format: "text",
+		},
+		Podman: PodmanConfig{
+			SocketPath: "unix:///run/podman/podman.sock",
 		},
 	}
 }

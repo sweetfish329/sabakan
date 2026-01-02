@@ -1,7 +1,6 @@
 {
   "oxlint.enable": true,
-  "oxlint.run": "onSave",
-  "oxlint.configPath": "./frontend/.oxlintrc.json",
+  "oxc.trace.server": "verbose",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.codeActionsOnSave": {

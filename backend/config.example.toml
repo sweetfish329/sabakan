@@ -10,3 +10,10 @@ path = "./sabakan.db"
 [logging]
 level = "info"    # debug, info, warn, error
 format = "text"   # json, text
+
+[podman]
+# Path to Podman socket
+# For rootful: unix:///run/podman/podman.sock
+# For rootless: unix://$XDG_RUNTIME_DIR/podman/podman.sock
+# For remote: tcp://host:port or http://host:port
+socket_path = "unix:///run/podman/podman.sock"

@@ -1,0 +1,93 @@
+# Development Containerfile for Sabakan
+# This container includes Podman-in-Podman for testing container management features.
+#
+# Build:
+#   podman build -f Containerfile.dev -t sabakan:dev .
+#
+# Run (with Podman socket mounted):
+#   podman run -it --rm \
+#     -v ./backend:/app/backend:Z \
+#     -v ./frontend:/app/frontend:Z \
+#     -p 1323:1323 -p 4200:4200 -p 6006:6006 \
+#     --privileged \
+#     sabakan:dev
+
+FROM debian:bookworm-slim
+
+LABEL maintainer="Sabakan Development Team"
+LABEL description="Development container for Sabakan with Podman support"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    podman \
+    git \
+    make \
+    curl \
+    unzip \
+    ca-certificates \
+    wget \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js 22 (LTS) from NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Go 1.25 (latest version matching go.mod)
+ENV GO_VERSION=1.25.5
+RUN wget -q https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz \
+    && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz \
+    && rm go${GO_VERSION}.linux-amd64.tar.gz
+ENV PATH="/usr/local/go/bin:${PATH}"
+ENV GOPATH="/root/go"
+ENV PATH="${GOPATH}/bin:${PATH}"
+
+# Install Bun
+RUN curl -fsSL https://bun.sh/install | bash
+ENV PATH="/root/.bun/bin:${PATH}"
+
+# Set up Podman for rootless operation within container
+RUN mkdir -p /run/podman && \
+    touch /run/podman/podman.sock
+
+WORKDIR /app
+
+# Copy project files
+COPY backend/go.mod backend/go.sum ./backend/
+RUN cd backend && go mod download
+
+COPY frontend/package.json frontend/bun.lock ./frontend/
+RUN cd frontend && bun install --frozen-lockfile
+
+# Copy remaining source
+COPY . .
+
+# Build backend
+RUN cd backend && go build -o sabakan ./cmd/sabakan
+
+# Build frontend
+RUN cd frontend && bun run build
+
+# Disable Angular CLI analytics prompt
+ENV NG_CLI_ANALYTICS=false
+
+# Expose ports
+# 1323: Backend API
+# 4200: Angular dev server
+# 6006: Storybook
+EXPOSE 1323 4200 6006
+
+# Create startup script
+RUN printf '#!/bin/bash\n\
+# Start Podman socket\n\
+podman system service --time=0 unix:///run/podman/podman.sock &\n\
+sleep 2\n\
+echo "Podman socket ready at /run/podman/podman.sock"\n\
+echo "Starting Sabakan backend..."\n\
+cd /app/backend && ./sabakan &\n\
+echo "Starting Angular dev server..."\n\
+cd /app/frontend && bun run start\n\
+' > /start-dev.sh && chmod +x /start-dev.sh
+
+CMD ["/start-dev.sh"]

@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/sweetfish329/sabakan/backend/internal/config"
+	"github.com/sweetfish329/sabakan/backend/internal/container"
 	"github.com/sweetfish329/sabakan/backend/internal/db"
 	"github.com/sweetfish329/sabakan/backend/internal/logger"
 	"github.com/sweetfish329/sabakan/backend/internal/server"
@@ -42,9 +43,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Initialize Container Service
+	containerService := container.NewService(cfg.Podman.SocketPath)
+	logger.Info("Container service initialized", "socket", cfg.Podman.SocketPath)
+
 	// Initialize and Start Server
-	s := server.New()
+	s := server.New(containerService)
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
 	logger.Info("Starting server", "address", addr)
 	s.Logger.Fatal(s.Start(addr))
 }
+

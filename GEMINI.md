@@ -67,6 +67,50 @@
 
 - **Primary**: Podman (Initial focus).
 - **Secondary**: Docker (Future support planned).
+- **Base Images**: Use Alpine or Debian-slim for minimal image sizes.
+
+### Development Container (`Containerfile.dev`)
+
+開発・検証用コンテナ。Podman-in-Podmanでコンテナ管理機能のテストが可能。
+
+```bash
+# ビルド
+podman build -f Containerfile.dev -t sabakan:dev .
+
+# 実行（開発モード）
+podman run -it --rm \
+  -v ./backend:/app/backend:Z \
+  -v ./frontend:/app/frontend:Z \
+  -p 1323:1323 -p 4200:4200 -p 6006:6006 \
+  --privileged \
+  sabakan:dev
+```
+
+### Production Container (`Containerfile`)
+
+本番用マルチステージビルド。Go + Angular の最小イメージ。
+
+```bash
+# ビルド
+podman build -f Containerfile -t sabakan:latest .
+
+# 実行
+podman run -d --name sabakan \
+  -v /run/podman/podman.sock:/run/podman/podman.sock:Z \
+  -v sabakan-data:/data:Z \
+  -p 1323:1323 \
+  sabakan:latest
+```
+
+### Compose (`compose.yml`)
+
+```bash
+# 開発（デフォルト）
+podman compose up
+
+# 本番
+podman compose --profile prod up -d
+```
 
 # Configuration
 

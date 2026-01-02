@@ -96,7 +96,8 @@
             "development": {
               "buildTarget": "frontend:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
