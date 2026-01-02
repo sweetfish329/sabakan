@@ -22,6 +22,9 @@
     "*.{html,json,md}": [
       "oxlint -c .oxlintrc.json"
     ],
+    "../backend/**/*.go": [
+      "gofmt -w"
+    ],
     "*": []
   },
   "prettier": {
