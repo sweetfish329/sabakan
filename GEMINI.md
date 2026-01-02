@@ -17,10 +17,14 @@
   - Micro-interactions on buttons, cards, inputs
 - **Design Principles**:
   - **Lightweight**: Lazy-load modules, tree-shake unused Material components
-  - **Rich & Modern**: Glassmorphism, subtle shadows, smooth transitions
+  - **Rich & Modern**: Glassmorphism, subtle shadows, smooth transitions, premium feel
   - **Accessible**: Follow Material Design accessibility guidelines
 - **Theme**: Custom dark/light theme with CSS variables
 - **Icons**: Material Symbols (variable font)
+- **Aesthetic Guidelines**:
+  - **Glassmorphism**: Use for cards, overlays, and sticky headers. (Blur + Transparency + Thin Border)
+  - **Gradients**: Use sparingly. Avoid heavy, high-contrast linear gradients for backgrounds. Use subtle, mesh-like gradients or solid colors with glass effects.
+  - **Shadows**: Soft, diffused shadows for depth. Avoid harsh, black shadows.
 
 # Commands
 

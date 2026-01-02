@@ -1,33 +1,27 @@
-import {
-	ChangeDetectionStrategy,
-	Component,
-	computed,
-	input,
-	output,
-} from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import type { Container, ContainerState } from '../../../models/container.model';
+import { ChangeDetectionStrategy, Component, computed, input, output } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
+import { MatIconModule } from "@angular/material/icon";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import type { Container, ContainerState } from "../../../models/container.model";
 
 /**
  * Displays a single container as a card with status and controls.
  */
 @Component({
-	selector: 'app-container-card',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [
-		MatCardModule,
-		MatButtonModule,
-		MatIconModule,
-		MatChipsModule,
-		MatTooltipModule,
-		MatProgressSpinnerModule,
-	],
-	template: `
+  selector: "app-container-card",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+  ],
+  template: `
 		<mat-card class="container-card" [class]="stateClass()">
 			<mat-card-header>
 				<mat-card-title>{{ container().name || container().id.slice(0, 12) }}</mat-card-title>
@@ -76,15 +70,21 @@ import type { Container, ContainerState } from '../../../models/container.model'
 			</mat-card-actions>
 		</mat-card>
 	`,
-	styles: `
+  styles: `
 		.container-card {
 			margin: 8px;
 			min-width: 300px;
-			transition: box-shadow 0.2s ease, transform 0.2s ease;
+			background: var(--glass-bg);
+			backdrop-filter: blur(var(--glass-blur));
+			-webkit-backdrop-filter: blur(var(--glass-blur));
+			border: var(--glass-border);
+			border-radius: 16px;
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			box-shadow: var(--glass-shadow);
 
 			&:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+				transform: translateY(-4px);
+				box-shadow: var(--glass-shadow-hover);
 			}
 
 			&.running {
@@ -167,59 +167,59 @@ import type { Container, ContainerState } from '../../../models/container.model'
 	`,
 })
 export class ContainerCardComponent {
-	/** The container to display */
-	readonly container = input.required<Container>();
+  /** The container to display */
+  readonly container = input.required<Container>();
 
-	/** Whether the card is in a loading state */
-	readonly loading = input<boolean>(false);
+  /** Whether the card is in a loading state */
+  readonly loading = input<boolean>(false);
 
-	/** Emitted when the start button is clicked */
-	readonly startClicked = output<string>();
+  /** Emitted when the start button is clicked */
+  readonly startClicked = output<string>();
 
-	/** Emitted when the stop button is clicked */
-	readonly stopClicked = output<string>();
+  /** Emitted when the stop button is clicked */
+  readonly stopClicked = output<string>();
 
-	/** Emitted when the details button is clicked */
-	readonly detailsClicked = output<string>();
+  /** Emitted when the details button is clicked */
+  readonly detailsClicked = output<string>();
 
-	/** CSS class based on container state */
-	protected readonly stateClass = computed(() => this.container().state);
+  /** CSS class based on container state */
+  protected readonly stateClass = computed(() => this.container().state);
 
-	/** Icon for the current state */
-	protected readonly stateIcon = computed(() => {
-		const iconMap: Record<ContainerState, string> = {
-			running: 'play_circle',
-			stopped: 'stop_circle',
-			created: 'add_circle',
-			paused: 'pause_circle',
-			restarting: 'refresh',
-			exited: 'cancel',
-			unknown: 'help',
-		};
-		return iconMap[this.container().state] ?? 'help';
-	});
+  /** Icon for the current state */
+  protected readonly stateIcon = computed(() => {
+    const iconMap: Record<ContainerState, string> = {
+      running: "play_circle",
+      stopped: "stop_circle",
+      created: "add_circle",
+      paused: "pause_circle",
+      restarting: "refresh",
+      exited: "cancel",
+      unknown: "help",
+    };
+    return iconMap[this.container().state] ?? "help";
+  });
 
-	/** Whether the container can be started */
-	protected readonly canStart = computed(() => {
-		const state = this.container().state;
-		return state === 'stopped' || state === 'exited' || state === 'created';
-	});
+  /** Whether the container can be started */
+  protected readonly canStart = computed(() => {
+    const state = this.container().state;
+    return state === "stopped" || state === "exited" || state === "created";
+  });
 
-	/** Whether the container can be stopped */
-	protected readonly canStop = computed(() => {
-		const state = this.container().state;
-		return state === 'running' || state === 'paused';
-	});
+  /** Whether the container can be stopped */
+  protected readonly canStop = computed(() => {
+    const state = this.container().state;
+    return state === "running" || state === "paused";
+  });
 
-	protected onStart(): void {
-		this.startClicked.emit(this.container().id);
-	}
+  protected onStart(): void {
+    this.startClicked.emit(this.container().id);
+  }
 
-	protected onStop(): void {
-		this.stopClicked.emit(this.container().id);
-	}
+  protected onStop(): void {
+    this.stopClicked.emit(this.container().id);
+  }
 
-	protected onViewDetails(): void {
-		this.detailsClicked.emit(this.container().id);
-	}
+  protected onViewDetails(): void {
+    this.detailsClicked.emit(this.container().id);
+  }
 }

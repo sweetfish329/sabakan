@@ -134,6 +134,12 @@ $dark-theme: mat.m2-define-dark-theme((
   --color-surface: #FFFFFF;
   --color-text-primary: rgba(0, 0, 0, 0.87);
   --color-text-secondary: rgba(0, 0, 0, 0.6);
+  --glass-opacity: 0.7;
+  --glass-blur: 12px;
+  --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+  --glass-bg: rgba(255, 255, 255, var(--glass-opacity));
+  --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --glass-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .dark-theme {
@@ -141,7 +147,16 @@ $dark-theme: mat.m2-define-dark-theme((
   --color-surface: #1E1E1E;
   --color-text-primary: rgba(255, 255, 255, 0.87);
   --color-text-secondary: rgba(255, 255, 255, 0.6);
+  
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(30, 30, 30, var(--glass-opacity));
+  --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
 }
+
+
+
+// Glassmorphism Mixins
+
 
 // Global styles
 html, body {

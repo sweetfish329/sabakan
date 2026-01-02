@@ -94,11 +94,12 @@ type ActionButtonSize = "small" | "medium" | "large";
   styles: `
 		.action-button {
 			border-radius: 24px;
-			transition: transform 0.2s ease, box-shadow 0.2s ease;
+			transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.025em;
 
 			&:not(:disabled):hover {
-				transform: translateY(-1px);
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25); // Using primary color shadow
 			}
 
 			&:not(:disabled):active {
