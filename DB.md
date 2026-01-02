@@ -10,6 +10,42 @@
 
 ---
 
+## 設定管理方針
+
+### TOML（静的設定）
+
+起動時に必要な環境設定。再起動で変更を反映。
+
+| ファイル | 内容 |
+|----------|------|
+| `config.toml` | サーバー、DB、ログ、Podman、JWT、Redis、認証設定 |
+| `games/<game-id>/config.toml` | ゲームテンプレート（デフォルトイメージ、ポート、環境変数） |
+
+### DB（動的データ）
+
+実行時に変更されるデータ。ユーザー操作で更新。
+
+| テーブル | 内容 |
+|----------|------|
+| `users`, `roles`, `permissions` | ユーザー・権限管理 |
+| `oauth_accounts`, `api_tokens`, `refresh_tokens` | 認証・セッション |
+| `game_servers`, `game_server_ports`, `game_server_envs` | サーバーインスタンス設定 |
+| `mods`, `game_server_mods` | MOD管理 |
+| `audit_logs` | 監査ログ |
+
+### ハイブリッド設計（ゲームサーバー）
+
+```
+games/minecraft/config.toml  ← ゲームテンプレート（イメージ名、デフォルトポート）
+DB: game_servers             ← サーバーインスタンス（ユーザーのカスタム設定）
+```
+
+- **テンプレート（TOML）**: 管理者が定義するゲームの雛形
+- **インスタンス（DB）**: ユーザーが作成する実際のサーバー
+
+---
+
+
 ## ER図
 
 ```mermaid

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/sweetfish329/sabakan/backend/internal/auth"
 	"github.com/sweetfish329/sabakan/backend/internal/models"
 	"gorm.io/gorm"
 )
@@ -28,6 +29,11 @@ func Seed() error {
 
 	// Assign permissions to roles
 	if err := assignRolePermissions(); err != nil {
+		return err
+	}
+
+	// Seed default admin user
+	if err := seedDefaultAdmin(); err != nil {
 		return err
 	}
 
@@ -91,6 +97,43 @@ func assignRolePermissions() error {
 	}
 
 	// Guest role has no permissions by default
+
+	return nil
+}
+
+// seedDefaultAdmin creates the initial admin user if it doesn't exist.
+func seedDefaultAdmin() error {
+	// Check if admin user already exists
+	var existingAdmin models.User
+	if err := DB.Where("username = ?", "admin").First(&existingAdmin).Error; err == nil {
+		// Admin already exists
+		return nil
+	}
+
+	// Get admin role
+	var adminRole models.Role
+	if err := DB.Where("name = ?", "admin").First(&adminRole).Error; err != nil {
+		return err
+	}
+
+	// Hash default password
+	// WARNING: Change this password on first login!
+	passwordHash, err := auth.HashPassword("admin")
+	if err != nil {
+		return err
+	}
+
+	// Create admin user
+	adminUser := models.User{
+		Username:     "admin",
+		PasswordHash: passwordHash,
+		RoleID:       adminRole.ID,
+		IsActive:     true,
+	}
+
+	if err := DB.Create(&adminUser).Error; err != nil {
+		return err
+	}
 
 	return nil
 }

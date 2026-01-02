@@ -2,9 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/sweetfish329/sabakan/backend/internal/auth"
+	"github.com/sweetfish329/sabakan/backend/internal/models"
 	"github.com/sweetfish329/sabakan/backend/internal/redis"
 	"gorm.io/gorm"
 )
@@ -82,10 +85,57 @@ func (h *AuthHandler) Register(c echo.Context) error {
 		})
 	}
 
-	// TODO: Implement full registration logic
-	// For now, return success for testing
-	return c.JSON(http.StatusCreated, map[string]string{
+	// Check if username already exists
+	var existingUser models.User
+	if err := h.db.Where("username = ?", req.Username).First(&existingUser).Error; err == nil {
+		return c.JSON(http.StatusConflict, ErrorResponse{
+			Error:   "conflict",
+			Message: "Username already exists",
+		})
+	}
+
+	// Hash password
+	passwordHash, err := auth.HashPassword(req.Password)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "internal_error",
+			Message: "Failed to process password",
+		})
+	}
+
+	// Get default role (user)
+	var userRole models.Role
+	if err := h.db.Where("name = ?", "user").First(&userRole).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "internal_error",
+			Message: "Failed to get default role",
+		})
+	}
+
+	// Create user
+	var email *string
+	if req.Email != "" {
+		email = &req.Email
+	}
+
+	user := models.User{
+		Username:     req.Username,
+		Email:        email,
+		PasswordHash: passwordHash,
+		RoleID:       userRole.ID,
+		IsActive:     true,
+	}
+
+	if err := h.db.Create(&user).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "internal_error",
+			Message: "Failed to create user",
+		})
+	}
+
+	return c.JSON(http.StatusCreated, map[string]any{
 		"message": "User registered successfully",
+		"user_id": user.ID,
 	})
 }
 
@@ -107,12 +157,65 @@ func (h *AuthHandler) Login(c echo.Context) error {
 		})
 	}
 
-	// TODO: Implement full login logic
-	// For now, return success for testing
+	// Find user
+	var user models.User
+	if err := h.db.Where("username = ?", req.Username).First(&user).Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, ErrorResponse{
+			Error:   "unauthorized",
+			Message: "Invalid credentials",
+		})
+	}
+
+	// Check if user is active
+	if !user.IsActive {
+		return c.JSON(http.StatusUnauthorized, ErrorResponse{
+			Error:   "unauthorized",
+			Message: "Account is disabled",
+		})
+	}
+
+	// Verify password
+	if !auth.VerifyPassword(req.Password, user.PasswordHash) {
+		return c.JSON(http.StatusUnauthorized, ErrorResponse{
+			Error:   "unauthorized",
+			Message: "Invalid credentials",
+		})
+	}
+
+	// Generate tokens
+	accessToken, jti, err := h.jwtManager.GenerateAccessToken(user.ID, user.Username)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "internal_error",
+			Message: "Failed to generate access token",
+		})
+	}
+
+	// Generate refresh token with family ID
+	familyID := uuid.New().String()
+	refreshToken, err := h.jwtManager.GenerateRefreshToken(user.ID, familyID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "internal_error",
+			Message: "Failed to generate refresh token",
+		})
+	}
+
+	// Store session in Redis if available
+	if h.sessionStore != nil {
+		sessionData := &redis.SessionData{
+			UserID:    user.ID,
+			IPAddress: c.RealIP(),
+			UserAgent: c.Request().UserAgent(),
+		}
+		_ = h.sessionStore.StoreSession(c.Request().Context(), jti, sessionData, 15*time.Minute)
+	}
+
 	return c.JSON(http.StatusOK, AuthResponse{
-		AccessToken: "placeholder-token",
-		ExpiresIn:   900,
-		TokenType:   "Bearer",
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+		ExpiresIn:    900, // 15 minutes in seconds
+		TokenType:    "Bearer",
 	})
 }
 
@@ -134,10 +237,53 @@ func (h *AuthHandler) Refresh(c echo.Context) error {
 		})
 	}
 
-	// TODO: Implement full refresh logic
-	// For now, return success for testing
+	// Validate refresh token
+	claims, err := h.jwtManager.ValidateRefreshToken(req.RefreshToken)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, ErrorResponse{
+			Error:   "unauthorized",
+			Message: "Invalid or expired refresh token",
+		})
+	}
+
+	// Get user
+	var user models.User
+	if err := h.db.First(&user, claims.UserID).Error; err != nil {
+		return c.JSON(http.StatusUnauthorized, ErrorResponse{
+			Error:   "unauthorized",
+			Message: "User not found",
+		})
+	}
+
+	// Check if user is still active
+	if !user.IsActive {
+		return c.JSON(http.StatusUnauthorized, ErrorResponse{
+			Error:   "unauthorized",
+			Message: "Account is disabled",
+		})
+	}
+
+	// Generate new access token
+	accessToken, jti, err := h.jwtManager.GenerateAccessToken(user.ID, user.Username)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error:   "internal_error",
+			Message: "Failed to generate access token",
+		})
+	}
+
+	// Store new session in Redis if available
+	if h.sessionStore != nil {
+		sessionData := &redis.SessionData{
+			UserID:    user.ID,
+			IPAddress: c.RealIP(),
+			UserAgent: c.Request().UserAgent(),
+		}
+		_ = h.sessionStore.StoreSession(c.Request().Context(), jti, sessionData, 15*time.Minute)
+	}
+
 	return c.JSON(http.StatusOK, AuthResponse{
-		AccessToken: "new-access-token",
+		AccessToken: accessToken,
 		ExpiresIn:   900,
 		TokenType:   "Bearer",
 	})
@@ -145,8 +291,15 @@ func (h *AuthHandler) Refresh(c echo.Context) error {
 
 // Logout handles user logout.
 func (h *AuthHandler) Logout(c echo.Context) error {
-	// TODO: Implement full logout logic
-	// For now, return success for testing
+	// Revoke session in Redis if available
+	if h.sessionStore != nil {
+		// Get JTI from context (set by auth middleware)
+		jti, ok := c.Get("jti").(string)
+		if ok && jti != "" {
+			_ = h.sessionStore.RevokeSession(c.Request().Context(), jti, 24*time.Hour)
+		}
+	}
+
 	return c.JSON(http.StatusOK, map[string]string{
 		"message": "Logged out successfully",
 	})
