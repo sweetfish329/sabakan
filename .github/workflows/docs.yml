@@ -109,7 +109,7 @@ jobs:
       - name: Generate OpenAPI Docs
         run: |
           mkdir -p docs/api
-          npx redoc-cli build openapi.yaml -o docs/api/index.html
+          npx @redocly/cli build-docs docs/openapi.yaml -o docs/api/index.html
 
       # Create index page with Fuji-murasaki theme
       - name: Create index page
