@@ -12,18 +12,16 @@
     "build-storybook": "ng run frontend:build-storybook",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "prepare": "cd .. && husky .husky"
+    "prepare": "cd .. && lefthook install"
   },
   "lint-staged": {
     "{src/**/*.{ts,js},*.{ts,js}}": [
       "oxlint -c .oxlintrc.json",
+      "eslint",
       "oxfmt --write"
     ],
     "*.{html,json,md}": [
       "oxlint -c .oxlintrc.json"
-    ],
-    "../backend/**/*.go": [
-      "gofmt -w"
     ],
     "*": []
   },
@@ -61,6 +59,7 @@
     "@angular/build": "^21.0.4",
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.0",
+    "@eslint/eslintrc": "^3.3.3",
     "@storybook/addon-a11y": "^8.0.0",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-links": "^8.0.0",
@@ -68,8 +67,17 @@
     "@tsconfig/strictest": "^2.0.8",
     "@vitest/coverage-istanbul": "^4.0.16",
     "@vitest/ui": "^4.0.16",
-    "husky": "^9.1.7",
+    "cspell": "^9.4.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-deprecation": "^3.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsdoc": "^61.5.0",
+    "eslint-plugin-oxlint": "^1.36.0",
+    "eslint-plugin-storybook": "^10.1.11",
+    "eslint-plugin-unicorn": "^62.0.0",
+    "globals": "^17.0.0",
     "jsdom": "^27.1.0",
+    "lefthook": "^2.0.13",
     "lint-staged": "^16.2.7",
     "oxfmt": "^0.21.0",
     "oxlint": "^1.36.0",
@@ -77,6 +85,7 @@
     "storybook": "^8.0.0",
     "typedoc": "^0.28.15",
     "typescript": "~5.9.2",
+    "typescript-eslint": "^8.51.0",
     "vitest": "^4.0.8"
   }
 }

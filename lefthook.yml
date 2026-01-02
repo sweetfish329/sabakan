@@ -1,0 +1,41 @@
+pre-commit:
+  parallel: true
+  commands:
+    # Backend Hooks
+    gofmt:
+      root: backend
+      glob: "*.go"
+      run: gofmt -w {staged_files}
+    backend-build:
+      root: backend
+      run: go build ./...
+    cspell-backend:
+      glob: "**/*"
+      root: backend
+      run: bun --cwd ../frontend cspell --no-progress "../backend/**/*.go"
+
+    # Frontend Hooks
+    lint-staged:
+      root: frontend
+      run: bunx lint-staged
+      env:
+        NG_CLI_ANALYTICS: "false"
+    storybook-lint:
+      root: frontend
+      glob: "**/*.stories.ts"
+      run: bunx eslint {staged_files}
+    frontend-build:
+      root: frontend
+      run: bun run build
+      env:
+        NG_CLI_ANALYTICS: "false"
+    cspell-frontend:
+      glob: "**/*"
+      root: frontend
+      run: bun cspell --no-progress "**/*"
+
+    # Documentation Hooks
+    cspell-docs:
+      glob: "*.md"
+      root: .
+      run: bun --cwd frontend cspell --no-progress "../README.md" "../docs/**/*"

@@ -4,7 +4,7 @@
 /* eslint-disable import/order */
 /* eslint-disable sort-imports */
 import { ActivatedRoute, provideRouter } from "@angular/router";
-// eslint-disable-next-line @typescript-eslint/consistent-type-import
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { applicationConfig, type Meta, type StoryObj } from "@storybook/angular";
 import type { Container, ContainerLogEntry } from "../../../models/container.model";
 import { provideHttpClient } from "@angular/common/http";
@@ -87,7 +87,7 @@ const createMockActivatedRoute = (containerId: string): Partial<ActivatedRoute> 
         if (key === "id") {
           return containerId;
         }
-        // eslint-disable-next-line @typescript-eslint/no-useless-undefined
+        // eslint-disable-next-line unicorn/no-useless-undefined
         return undefined; // eslint-disable-next-line unicorn/no-null
       },
       has: (key: string) => key === "id",
@@ -110,9 +110,9 @@ const createMockContainerService = (
 ): Partial<ContainerService> => ({
   get: () => of(container),
   logs: () => of(logs),
-  // eslint-disable-next-line @typescript-eslint/no-useless-undefined
+  // eslint-disable-next-line unicorn/no-useless-undefined
   start: () => of(undefined),
-  // eslint-disable-next-line @typescript-eslint/no-useless-undefined
+  // eslint-disable-next-line unicorn/no-useless-undefined
   stop: () => of(undefined),
 });
 
