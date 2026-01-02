@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="frontend/src/assets/images/SABAKAN-LOGO.png" alt="SABAKAN Logo" width="300">
+</p>
+
 # Sabakan
 
 **Sabakan** は、ゲームサーバーコンテナ、WebMAP、MODを統合管理するシステムです。
@@ -8,11 +12,31 @@
 - 📊 **ダッシュボード** - コンテナ状態をリアルタイム表示
 - 📝 **ログビューア** - コンテナログをブラウザで確認
 
+## Current Status
+
+- ✅ **Container Management** - Start/Stop/List functionality (Backend & Frontend)
+- 🏗️ **Authentication** - Backend handlers & models implemented (JWT + Redis); Frontend integration pending
+- 🏗️ **RBAC** - Data models defined; Policy enforcement pending
+- 🏗️ **Mod Management** - Data models defined; API & UI pending
+- 🏗️ **Audit Logging** - Data models defined
+
+## Roadmap
+
+- [x] Basic Container Operations (List, Start, Stop)
+- [x] User & Role Database Models
+- [x] Authentication API (Login, Register, Refresh)
+- [ ] Frontend Authentication UI (Login Page, Guards)
+- [ ] Role Based Access Control (RBAC) Middleware
+- [ ] Mod Management System
+- [ ] World Map Integration (WebMAP)
+- [ ] Discord/Webhook Integration
+
+
 ## Tech Stack
 
 | Layer | Technology |
-|-------|------------|
-| Frontend | Angular 20 + Angular Material + Bun |
+|---|---|
+| Frontend | Angular 21 + Angular Material + Bun |
 | Backend | Go 1.25 + Echo Framework |
 | Container | Podman (Docker互換) |
 | Database | SQLite (GORM) |
@@ -47,7 +71,7 @@ bun run start
 ## Container API
 
 | Endpoint | Method | Description |
-|----------|--------|-------------|
+|---|---|---|
 | `/api/containers` | GET | コンテナ一覧 |
 | `/api/containers/:id` | GET | コンテナ詳細 |
 | `/api/containers/:id/start` | POST | コンテナ起動 |
@@ -56,7 +80,7 @@ bun run start
 
 ## Project Structure
 
-```
+```text
 sabakan/
 ├── backend/           # Go + Echo API
 │   ├── cmd/sabakan/   # エントリポイント
