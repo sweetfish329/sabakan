@@ -172,7 +172,7 @@ export class ErrorBannerComponent {
 
   /**
    * Get configuration based on severity
-   * @returns The configuration object
+   * @returns {SeverityConfig} The configuration object
    */
   protected get config(): SeverityConfig {
     return SEVERITY_CONFIG[this.severity()];

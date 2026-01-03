@@ -59,26 +59,28 @@ export class AuthService {
   readonly currentUser = computed<UserInfo | undefined>(() => {
     const token = this._accessToken();
     if (token === undefined || token === "") {
-      return undefined;
+      return;
     }
     return this.decodeToken(token);
   });
 
   /**
    * Logs in with username and password.
-   * @param credentials - Login credentials
-   * @returns Observable of AuthResponse
+   * @param {LoginRequest} credentials - Login credentials
+   * @returns {Observable<AuthResponse>} Observable of AuthResponse
    */
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.baseUrl}/login`, credentials)
-      .pipe(tap((response) => this.storeTokens(response)));
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, credentials).pipe(
+      tap((response) => {
+        this.storeTokens(response);
+      }),
+    );
   }
 
   /**
    * Registers a new user.
-   * @param data - Registration data
-   * @returns Observable of the response
+   * @param {RegisterRequest} data - Registration data
+   * @returns {Observable<{ message: string; user_id: number }>} Observable of the response
    */
   register(data: RegisterRequest): Observable<{ message: string; user_id: number }> {
     return this.http.post<{ message: string; user_id: number }>(`${this.baseUrl}/register`, data);
@@ -86,7 +88,7 @@ export class AuthService {
 
   /**
    * Refreshes the access token using the refresh token.
-   * @returns Observable of AuthResponse
+   * @returns {Observable<AuthResponse>} Observable of AuthResponse
    */
   refresh(): Observable<AuthResponse> {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
@@ -94,17 +96,23 @@ export class AuthService {
       .post<AuthResponse>(`${this.baseUrl}/refresh`, {
         refresh_token: refreshToken,
       })
-      .pipe(tap((response) => this.storeTokens(response)));
+      .pipe(
+        tap((response) => {
+          this.storeTokens(response);
+        }),
+      );
   }
 
   /**
    * Logs out the current user.
-   * @returns Observable that completes on logout
+   * @returns {Observable<{ message: string }>} Observable that completes on logout
    */
   logout(): Observable<{ message: string }> {
-    return this.http
-      .post<{ message: string }>(`${this.baseUrl}/logout`, null)
-      .pipe(tap(() => this.clearTokens()));
+    return this.http.post<{ message: string }>(`${this.baseUrl}/logout`, {}).pipe(
+      tap(() => {
+        this.clearTokens();
+      }),
+    );
   }
 
   /**
@@ -118,7 +126,7 @@ export class AuthService {
 
   /**
    * Gets the current access token for HTTP interceptor.
-   * @returns Access token or undefined
+   * @returns {string | undefined} Access token or undefined
    */
   getAccessToken(): string | undefined {
     return this._accessToken();
@@ -126,8 +134,8 @@ export class AuthService {
 
   /**
    * Stores tokens from OAuth callback.
-   * @param accessToken - Access token
-   * @param refreshToken - Refresh token
+   * @param {string} accessToken - Access token
+   * @param {string} refreshToken - Refresh token
    */
   storeOAuthTokens(accessToken: string, refreshToken: string): void {
     this.storeTokens({
@@ -140,16 +148,17 @@ export class AuthService {
 
   /**
    * Returns the OAuth authorization URL for a provider.
-   * @param provider - OAuth provider name (google, discord)
-   * @returns OAuth authorization URL
+   * @param {"google" | "discord"} provider - OAuth provider name (google, discord)
+   * @returns {string} OAuth authorization URL
    */
   getOAuthUrl(provider: "google" | "discord"): string {
-    return `${this.baseUrl}/oauth/${provider}`;
+    const redirectUrl = `${globalThis.location.origin}/oauth/callback`;
+    return `${this.baseUrl}/${provider}?redirect_url=${encodeURIComponent(redirectUrl)}`;
   }
 
   private storeTokens(response: AuthResponse): void {
     localStorage.setItem(ACCESS_TOKEN_KEY, response.access_token);
-    if (response.refresh_token) {
+    if (response.refresh_token !== undefined && response.refresh_token !== null) {
       localStorage.setItem(REFRESH_TOKEN_KEY, response.refresh_token);
     }
     this._accessToken.set(response.access_token);
@@ -161,10 +170,9 @@ export class AuthService {
 
   private decodeToken(token: string): UserInfo | undefined {
     try {
-      const parts = token.split(".");
-      const payload = parts[1];
+      const [, payload] = token.split(".");
       if (payload === undefined) {
-        return undefined;
+        return;
       }
       const decoded = JSON.parse(atob(payload)) as { user_id: number; username: string };
       return {

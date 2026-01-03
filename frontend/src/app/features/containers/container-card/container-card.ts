@@ -201,13 +201,13 @@ export class ContainerCardComponent {
 
   /** Whether the container can be started */
   protected readonly canStart = computed(() => {
-    const state = this.container().state;
+    const { state } = this.container();
     return state === "stopped" || state === "exited" || state === "created";
   });
 
   /** Whether the container can be stopped */
   protected readonly canStop = computed(() => {
-    const state = this.container().state;
+    const { state } = this.container();
     return state === "running" || state === "paused";
   });
 

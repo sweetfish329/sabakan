@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, type OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { AuthService } from "../../../services/auth.service";
@@ -43,9 +43,7 @@ export class OAuthCallbackComponent implements OnInit {
   ngOnInit(): void {
     // Get tokens from URL query params
     this.route.queryParams.subscribe((params) => {
-      const accessToken = params["access_token"];
-      const refreshToken = params["refresh_token"];
-      const error = params["error"];
+      const { access_token: accessToken, refresh_token: refreshToken, error } = params;
 
       if (error) {
         console.error("OAuth error:", error);

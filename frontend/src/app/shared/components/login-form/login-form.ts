@@ -113,8 +113,10 @@ export interface LoginFormData {
 				@if (loading()) {
 					<mat-spinner diameter="24" />
 				} @else {
-					<span class="login-form__submit-text">Sign In</span>
-					<mat-icon class="login-form__submit-icon">arrow_forward</mat-icon>
+					<ng-container>
+						<span class="login-form__submit-text">Sign In</span>
+						<mat-icon class="login-form__submit-icon" iconPositionEnd>arrow_forward</mat-icon>
+					</ng-container>
 				}
 			</button>
 		</form>

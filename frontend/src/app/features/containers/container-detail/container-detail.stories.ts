@@ -5,7 +5,9 @@
 /* eslint-disable sort-imports */
 import { ActivatedRoute, provideRouter } from "@angular/router";
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-import { applicationConfig, type Meta, type StoryObj } from "@storybook/angular";
+import { applicationConfig } from "@storybook/angular";
+// eslint-disable-next-line no-duplicate-imports
+import type { Meta, StoryObj } from "@storybook/angular";
 import type { Container, ContainerLogEntry } from "../../../models/container.model";
 import { provideHttpClient } from "@angular/common/http";
 import { provideAnimations } from "@angular/platform-browser/animations";
