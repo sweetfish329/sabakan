@@ -65,6 +65,17 @@ func New(deps *Dependencies) *echo.Echo {
 	authGroup.POST("/refresh", authHandler.Refresh)
 	authGroup.POST("/logout", authMiddleware.Authenticate(authHandler.Logout))
 
+	// OAuth routes (public)
+	oauthHandler := handlers.NewOAuthHandler(
+		deps.DB,
+		jwtManager,
+		deps.SessionStore,
+		&deps.Config.OAuth,
+		"http://localhost:4200", // Frontend URL
+	)
+	authGroup.GET("/oauth/:provider", oauthHandler.Authorize)
+	authGroup.GET("/oauth/:provider/callback", oauthHandler.Callback)
+
 	// API routes (protected)
 	api := e.Group("/api")
 	api.Use(authMiddleware.Authenticate)

@@ -17,6 +17,7 @@ type SystemConfig struct {
 	JWT      JWTConfig      `toml:"jwt"`
 	Redis    RedisConfig    `toml:"redis"`
 	Auth     AuthConfig     `toml:"auth"`
+	OAuth    OAuthConfig    `toml:"oauth"`
 }
 
 // ServerConfig contains HTTP server settings.
@@ -59,6 +60,19 @@ type RedisConfig struct {
 // AuthConfig contains authentication settings.
 type AuthConfig struct {
 	AllowRegistration bool `toml:"allow_registration"` // Whether to allow new user registration
+}
+
+// OAuthConfig contains OAuth provider settings.
+type OAuthConfig struct {
+	Google  OAuthProviderConfig `toml:"google"`
+	Discord OAuthProviderConfig `toml:"discord"`
+}
+
+// OAuthProviderConfig contains settings for a single OAuth provider.
+type OAuthProviderConfig struct {
+	ClientID     string `toml:"client_id"`
+	ClientSecret string `toml:"client_secret"`
+	RedirectURL  string `toml:"redirect_url"`
 }
 
 // GameConfig represents per-game configuration.
@@ -133,6 +147,14 @@ func DefaultSystemConfig() *SystemConfig {
 		},
 		Auth: AuthConfig{
 			AllowRegistration: true,
+		},
+		OAuth: OAuthConfig{
+			Google: OAuthProviderConfig{
+				RedirectURL: "http://localhost:1323/auth/oauth/google/callback",
+			},
+			Discord: OAuthProviderConfig{
+				RedirectURL: "http://localhost:1323/auth/oauth/discord/callback",
+			},
 		},
 	}
 }

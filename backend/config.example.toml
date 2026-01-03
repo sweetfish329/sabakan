@@ -33,3 +33,16 @@ url = "redis://localhost:6379"
 # Allow new user registration
 allow_registration = true
 
+[oauth.google]
+# Google OAuth credentials (get from Google Cloud Console)
+client_id = ""
+client_secret = ""
+redirect_url = "http://localhost:1323/auth/oauth/google/callback"
+
+[oauth.discord]
+# Discord OAuth credentials (get from Discord Developer Portal)
+client_id = ""
+client_secret = ""
+redirect_url = "http://localhost:1323/auth/oauth/discord/callback"
+
+
