@@ -58,7 +58,7 @@ COPY backend/go.mod backend/go.sum ./backend/
 RUN cd backend && go mod download
 
 COPY frontend/package.json frontend/bun.lock ./frontend/
-RUN cd frontend && bun install --frozen-lockfile
+RUN cd frontend && bun install --frozen-lockfile --ignore-scripts
 
 # Copy remaining source
 COPY . .

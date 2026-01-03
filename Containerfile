@@ -36,9 +36,9 @@ FROM oven/bun:1-alpine AS frontend-builder
 
 WORKDIR /build
 
-# Copy package files and install dependencies
+# Copy package files and install dependencies (skip prepare scripts for CI)
 COPY frontend/package.json frontend/bun.lock ./
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --ignore-scripts
 
 # Copy source and build
 COPY frontend/ ./
