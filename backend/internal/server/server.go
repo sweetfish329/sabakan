@@ -89,5 +89,14 @@ func New(deps *Dependencies) *echo.Echo {
 	containers.POST("/:id/stop", containerHandler.Stop, permMiddleware.RequirePermission("game_server", "stop"))
 	containers.GET("/:id/logs", containerHandler.Logs, permMiddleware.RequirePermission("game_server", "read"))
 
+	// Mod routes
+	modHandler := handlers.NewModHandler(deps.DB)
+	mods := api.Group("/mods")
+	mods.GET("", modHandler.List, permMiddleware.RequirePermission("mod", "read"))
+	mods.GET("/:id", modHandler.Get, permMiddleware.RequirePermission("mod", "read"))
+	mods.POST("", modHandler.Create, permMiddleware.RequirePermission("mod", "create"))
+	mods.PUT("/:id", modHandler.Update, permMiddleware.RequirePermission("mod", "update"))
+	mods.DELETE("/:id", modHandler.Delete, permMiddleware.RequirePermission("mod", "delete"))
+
 	return e
 }

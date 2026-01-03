@@ -1,5 +1,8 @@
 import type { Routes } from "@angular/router";
 
+import { authGuard } from "./core/guards/auth.guard";
+import { guestGuard } from "./core/guards/guest.guard";
+
 /**
  * Application routes.
  */
@@ -7,6 +10,7 @@ export const routes: Routes = [
   { path: "", redirectTo: "containers", pathMatch: "full" },
   {
     path: "login",
+    canActivate: [guestGuard],
     /**
      * @returns {Promise<any>} Login page component
      */
@@ -15,6 +19,7 @@ export const routes: Routes = [
   },
   {
     path: "register",
+    canActivate: [guestGuard],
     /**
      * @returns {Promise<any>} Register page component
      */
@@ -35,6 +40,7 @@ export const routes: Routes = [
   },
   {
     path: "containers",
+    canActivate: [authGuard],
     /**
      * @returns {Promise<any>} Container list component
      */
@@ -45,6 +51,7 @@ export const routes: Routes = [
   },
   {
     path: "containers/:id",
+    canActivate: [authGuard],
     /**
      * @returns {Promise<any>} Container detail component
      */
@@ -52,5 +59,14 @@ export const routes: Routes = [
       import("./features/containers/container-detail/container-detail").then(
         (mod) => mod.ContainerDetailComponent,
       ),
+  },
+  {
+    path: "mods",
+    canActivate: [authGuard],
+    /**
+     * @returns {Promise<any>} Mod list component
+     */
+    loadComponent: () =>
+      import("./features/mods/mod-list/mod-list").then((mod) => mod.ModListComponent),
   },
 ];

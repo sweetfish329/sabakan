@@ -1,8 +1,8 @@
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/group-exports */
-/* eslint-disable import/exports-last */
-/* eslint-disable import/order */
-/* eslint-disable sort-imports */
+ 
+ 
+ 
+ 
+ 
 import type { Meta, StoryObj } from "@storybook/angular";
 import type { InfoItem } from "./info-card";
 import { InfoCardComponent } from "./info-card";

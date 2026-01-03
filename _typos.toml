@@ -1,0 +1,48 @@
+# typos configuration file
+# https://github.com/crate-ci/typos
+
+[files]
+extend-exclude = [
+  "node_modules/",
+  "dist/",
+  ".git/",
+  "*.min.js",
+  "*.lock",
+]
+
+[default.extend-words]
+# Game names and identifiers
+Palworld = "Palworld"
+palworld = "palworld"
+Factorio = "Factorio"
+factorio = "factorio"
+daystodie = "daystodie"
+
+# Docker Hub usernames and image names
+vinanrra = "vinanrra"
+thijsvanloef = "thijsvanloef"
+factoriotools = "factoriotools"
+pfeiffer = "pfeiffer"
+maxpfeiffer = "maxpfeiffer"
+itzg = "itzg"
+wolveix = "wolveix"
+hermsi = "hermsi"
+
+# Environment variable names (commonly used in Docker images)
+PUID = "PUID"
+PGID = "PGID"
+MAXPLAYERS = "MAXPLAYERS"
+WORLDSIZE = "WORLDSIZE"
+STEAMBETA = "STEAMBETA"
+AUTOPAUSE = "AUTOPAUSE"
+AUTOSAVEINTERVAL = "AUTOSAVEINTERVAL"
+AUTOSAVENUM = "AUTOSAVENUM"
+AUTOSAVEONDISCONNECT = "AUTOSAVEONDISCONNECT"
+CRASHREPORT = "CRASHREPORT"
+DISABLESEASONALEVENTS = "DISABLESEASONALEVENTS"
+NETWORKQUALITY = "NETWORKQUALITY"
+CROSSPLAY = "CROSSPLAY"
+BATTLEYE = "BATTLEYE"
+
+# Common placeholder passwords in examples
+changeme = "changeme"

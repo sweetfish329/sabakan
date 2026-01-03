@@ -12,6 +12,18 @@
 - 📊 **ダッシュボード** - コンテナ状態をリアルタイム表示
 - 📝 **ログビューア** - コンテナログをブラウザで確認
 
+## Supported Games
+
+| Game | Docker Image | Status |
+|------|--------------|--------|
+| 🟫 Minecraft | [itzg/docker-minecraft-server](https://github.com/itzg/docker-minecraft-server) | ✅ Supported |
+| 🦎 Palworld | [thijsvanloef/palworld-server-docker](https://github.com/thijsvanloef/palworld-server-docker) | ✅ Supported |
+| 🧟 7 Days to Die | [vinanrra/Docker-7DaysToDie](https://github.com/vinanrra/Docker-7DaysToDie) | ✅ Supported |
+| 🏭 Satisfactory | [wolveix/satisfactory-server](https://github.com/wolveix/satisfactory-server) | ✅ Supported |
+| 🦖 ARK: Survival Evolved | [hermsi/ark-server](https://hub.docker.com/r/hermsi/ark-server/) | ✅ Supported |
+| ⚙️ Factorio | [factoriotools/factorio](https://hub.docker.com/r/factoriotools/factorio) | ✅ Supported |
+| 🔫 Rust | [max-pfeiffer/rust-game-server-docker](https://github.com/max-pfeiffer/rust-game-server-docker) | ✅ Supported |
+
 ## Current Status
 
 - ✅ **Container Management** - Start/Stop/List functionality (Backend & Frontend)

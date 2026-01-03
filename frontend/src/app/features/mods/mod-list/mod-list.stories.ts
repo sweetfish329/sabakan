@@ -4,11 +4,11 @@ import { provideRouter } from "@angular/router";
 import { provideHttpClient } from "@angular/common/http";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 
-import { RegisterPageComponent } from "./register-page";
+import { ModListComponent } from "./mod-list";
 
-const meta: Meta<RegisterPageComponent> = {
-  title: "Features/Auth/RegisterPage",
-  component: RegisterPageComponent,
+const meta: Meta<ModListComponent> = {
+  title: "Features/Mods/ModList",
+  component: ModListComponent,
   tags: ["autodocs"],
   parameters: {
     layout: "fullscreen",
@@ -21,10 +21,9 @@ const meta: Meta<RegisterPageComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<RegisterPageComponent>;
+type Story = StoryObj<ModListComponent>;
 
 /**
- * Default register page showing the initial state.
- * Includes registration form and social login options.
+ * Default mod list showing available mods.
  */
 export const Default: Story = {};

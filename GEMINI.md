@@ -211,3 +211,40 @@ podman compose --profile prod up -d
 - **Initial Admin**: `admin/admin` (change on first login)
 - **OAuth Providers**: Google, Discord
 - **API Tokens**: Configurable via settings UI and environment variables
+
+## Supported Games
+
+Sabakan supports the following game servers via Docker/Podman images:
+
+| Game | Docker Image | Handler |
+|------|--------------|---------|
+| Minecraft | [itzg/docker-minecraft-server](https://github.com/itzg/docker-minecraft-server) | `minecraft.go` |
+| Palworld | [thijsvanloef/palworld-server-docker](https://github.com/thijsvanloef/palworld-server-docker) | `palworld.go` |
+| 7 Days to Die | [vinanrra/Docker-7DaysToDie](https://github.com/vinanrra/Docker-7DaysToDie) | `7daystodie.go` |
+| Satisfactory | [wolveix/satisfactory-server](https://github.com/wolveix/satisfactory-server) | `satisfactory.go` |
+| ARK: Survival Evolved | [hermsi/ark-server](https://hub.docker.com/r/hermsi/ark-server/) | `ark.go` |
+| Factorio | [factoriotools/factorio](https://hub.docker.com/r/factoriotools/factorio) | `factorio.go` |
+| Rust | [max-pfeiffer/rust-game-server-docker](https://github.com/max-pfeiffer/rust-game-server-docker) | `rust.go` |
+
+### Game Handler Architecture
+
+Each game has a dedicated handler in `backend/internal/games/`:
+
+```text
+backend/internal/games/
+├── games.go             # Common interface and registry
+├── minecraft.go         # Minecraft-specific logic
+├── palworld.go          # Palworld-specific logic
+├── 7daystodie.go        # 7 Days to Die-specific logic
+├── satisfactory.go      # Satisfactory-specific logic
+├── ark.go               # ARK-specific logic
+├── factorio.go          # Factorio-specific logic
+└── rust.go              # Rust-specific logic
+```
+
+### Adding New Games
+
+1. Create `backend/internal/games/<game>.go`
+2. Implement the `GameHandler` interface
+3. Register in `games.go`
+4. Add Docker image reference to documentation
