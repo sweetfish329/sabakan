@@ -59,6 +59,18 @@
   - Document public APIs.
   - Use **CRLF** for line endings.
 
+## Linting Configuration
+
+The project uses `oxlint` for fast linting. Some rules are explicitly disabled in `.oxlintrc.json` to prioritize productivity:
+
+- **Disabled Rules**:
+  - `max-dependencies`, `max-statements`, `max-lines-per-function`: To avoid arbitrary code splitting.
+  - `init-declarations`: To accommodate Angular's dependency injection patterns.
+  - `no-ternary`: To allow concise conditional logic.
+  - `no-duplicate-imports`: Disabled to allow flexible import organization (merged by formatter if possible).
+  - `jsdoc/require-param`: Disabled to reduce documentation overhead for obvious parameters.
+
+
 ## Workflow
 
 > [!IMPORTANT]
@@ -139,6 +151,13 @@ component-name/
 - [ ] Storybook stories exist for new components
 - [ ] Build succeeds (`go build ./...` or `bun run build`)
 
+> [!TIP]
+> **Storybook Assets**: If you look for images in `/assets`, ensure `.storybook/main.ts` has `staticDirs` configured:
+>
+> ```ts
+> staticDirs: [{ from: "../src/assets", to: "/assets" }],
+> ```
+
 ## Container Support
 
 - **Primary**: Podman (Initial focus).
@@ -217,7 +236,7 @@ podman compose --profile prod up -d
 Sabakan supports the following game servers via Docker/Podman images:
 
 | Game | Docker Image | Handler |
-|------|--------------|---------|
+| --- | --- | --- |
 | Minecraft | [itzg/docker-minecraft-server](https://github.com/itzg/docker-minecraft-server) | `minecraft.go` |
 | Palworld | [thijsvanloef/palworld-server-docker](https://github.com/thijsvanloef/palworld-server-docker) | `palworld.go` |
 | 7 Days to Die | [vinanrra/Docker-7DaysToDie](https://github.com/vinanrra/Docker-7DaysToDie) | `7daystodie.go` |

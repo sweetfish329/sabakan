@@ -39,8 +39,8 @@
 - [x] Authentication API (Login, Register, Refresh)
 - [x] Frontend Authentication UI (Login Page, Guards)
 - [x] Role Based Access Control (RBAC) Middleware
-- [ ] Game Server Creation Flow
-- [ ] Mod Management UI
+- [x] Game Server Creation Flow
+- [x] Mod Management UI
 - [ ] World Map Integration (WebMAP)
 - [ ] Discord/Webhook Integration
 
@@ -48,9 +48,9 @@
 
 | Layer | Technology |
 |---|---|
-| Frontend | Angular 21 + Angular Material + Bun |
-| Backend | Go 1.25 + Echo Framework |
-| Container | Podman (Docker互換) |
+| Frontend | Angular 21 + Angular Material + Vanilla CSS/SCSS (Bun as tooling) |
+| Backend | Go 1.25.5 + Echo Framework |
+| Container | Podman (Docker compatible) |
 | Database | SQLite (GORM) |
 
 ## Quick Start
