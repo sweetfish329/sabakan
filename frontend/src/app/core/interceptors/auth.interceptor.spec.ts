@@ -1,8 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { HttpClient, provideHttpClient, withInterceptors } from "@angular/common/http";
 import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import type { Mock } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi, type Mock } from "vitest";
 
 import { AuthService } from "../../services/auth.service";
 import { authInterceptor } from "./auth.interceptor";
@@ -51,7 +50,7 @@ describe("authInterceptor", () => {
     });
 
     it("should not add Authorization header when no token exists", () => {
-      authServiceMock.getAccessToken.mockReturnValue(undefined);
+      authServiceMock.getAccessToken.mockReturnValue(null);
 
       httpClient.get("/api/containers").subscribe();
 

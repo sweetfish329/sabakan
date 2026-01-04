@@ -1,12 +1,7 @@
- 
- 
- 
- 
- 
 import { ActivatedRoute, provideRouter } from "@angular/router";
- 
+
 import { applicationConfig } from "@storybook/angular";
- 
+
 import type { Meta, StoryObj } from "@storybook/angular";
 import type { Container, ContainerLogEntry } from "../../../models/container.model";
 import { provideHttpClient } from "@angular/common/http";
@@ -89,8 +84,9 @@ const createMockActivatedRoute = (containerId: string): Partial<ActivatedRoute> 
         if (key === "id") {
           return containerId;
         }
-         
-        return undefined;  
+
+        // eslint-disable-next-line unicorn/no-null
+        return null;
       },
       has: (key: string) => key === "id",
       getAll: () => [],
@@ -112,10 +108,10 @@ const createMockContainerService = (
 ): Partial<ContainerService> => ({
   get: () => of(container),
   logs: () => of(logs),
-   
-  start: () => of(undefined),
-   
-  stop: () => of(undefined),
+
+  start: () => of(void 0),
+
+  stop: () => of(void 0),
 });
 
 const meta: Meta<ContainerDetailComponent> = {
@@ -124,12 +120,7 @@ const meta: Meta<ContainerDetailComponent> = {
   tags: ["autodocs"],
   decorators: [
     applicationConfig({
-      providers: [
-         
-        provideAnimations(),
-        provideRouter([]),
-        provideHttpClient(),
-      ],
+      providers: [provideAnimations(), provideRouter([]), provideHttpClient()],
     }),
   ],
 };
@@ -143,7 +134,6 @@ const Running: Story = {
   decorators: [
     applicationConfig({
       providers: [
-         
         provideAnimations(),
         provideRouter([]),
         provideHttpClient(),

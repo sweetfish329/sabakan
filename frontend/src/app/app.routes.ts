@@ -69,4 +69,26 @@ export const routes: Routes = [
     loadComponent: () =>
       import("./features/mods/mod-list/mod-list").then((mod) => mod.ModListComponent),
   },
+  {
+    path: "game-servers",
+    canActivate: [authGuard],
+    /**
+     * @returns {Promise<any>} Game server list component
+     */
+    loadComponent: () =>
+      import("./features/game-servers/game-server-list/game-server-list").then(
+        (mod) => mod.GameServerListComponent,
+      ),
+  },
+  {
+    path: "game-servers/:slug",
+    canActivate: [authGuard],
+    /**
+     * @returns {Promise<any>} Game server detail component
+     */
+    loadComponent: () =>
+      import("./features/game-servers/game-server-list/game-server-list").then(
+        (mod) => mod.GameServerListComponent,
+      ),
+  },
 ];

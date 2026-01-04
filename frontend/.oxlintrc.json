@@ -12,12 +12,23 @@
     "sort-keys": "off",
     "new-cap": "off",
     "unicorn/prefer-top-level-await": "off",
+    "unicorn/no-null": "off",
     "import/no-named-export": "off",
     "import/prefer-default-export": "off",
     "import/group-exports": "off",
     "import/exports-last": "off",
+    "import/consistent-type-specifier-style": "off",
+    "import/max-dependencies": "off",
     "sort-imports": "off",
-    "no-magic-numbers": "off"
+    "no-magic-numbers": "off",
+    "no-ternary": "off",
+    "no-duplicate-imports": "off",
+    "init-declarations": "off",
+    "max-statements": "off",
+    "max-lines-per-function": "off",
+    "jsdoc/require-param": "off",
+    "typescript-eslint/no-deprecated": "off",
+    "typescript-eslint/consistent-type-imports": "off"
   },
   "overrides": [
     {

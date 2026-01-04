@@ -3,8 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from "@angular/common
 import { provideHttpClient } from "@angular/common/http";
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
-import { ModService } from "./mod.service";
-import type { Mod, CreateModRequest, UpdateModRequest } from "./mod.service";
+import { ModService, type Mod, type CreateModRequest, type UpdateModRequest } from "./mod.service";
 
 describe("ModService", () => {
   let service: ModService;

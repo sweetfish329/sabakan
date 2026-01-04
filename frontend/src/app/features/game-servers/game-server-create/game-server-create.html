@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>
+  <mat-icon>add</mat-icon>
+  Create Game Server
+</h2>
+
+<mat-dialog-content>
+  @if (error()) {
+    <div class="error-message">
+      <mat-icon>error</mat-icon>
+      {{ error() }}
+    </div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Server Name</mat-label>
+      <input matInput formControlName="name" placeholder="My Awesome Server" (blur)="generateSlug()" />
+      <mat-hint>Give your server a memorable name</mat-hint>
+      @if (form.get('name')?.hasError('required')) {
+        <mat-error>Name is required</mat-error>
+      }
+      @if (form.get('name')?.hasError('minlength')) {
+        <mat-error>Name must be at least 3 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Slug</mat-label>
+      <input matInput formControlName="slug" placeholder="my-awesome-server" />
+      <mat-hint>URL-friendly identifier (lowercase, numbers, hyphens)</mat-hint>
+      @if (form.get('slug')?.hasError('required')) {
+        <mat-error>Slug is required</mat-error>
+      }
+      @if (form.get('slug')?.hasError('pattern')) {
+        <mat-error>Only lowercase letters, numbers, and hyphens allowed</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Game</mat-label>
+      <mat-select formControlName="game">
+        @for (game of gameOptions; track game.value) {
+          <mat-option [value]="game.value">
+            <mat-icon>{{ game.icon }}</mat-icon>
+            {{ game.label }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3" placeholder="Optional description..."></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="loading()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading()">
+    @if (loading()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      <ng-container>
+        <mat-icon>add</mat-icon>
+        Create Server
+      </ng-container>
+    }
+  </button>
+</mat-dialog-actions>

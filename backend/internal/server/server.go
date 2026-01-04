@@ -98,5 +98,15 @@ func New(deps *Dependencies) *echo.Echo {
 	mods.PUT("/:id", modHandler.Update, permMiddleware.RequirePermission("mod", "update"))
 	mods.DELETE("/:id", modHandler.Delete, permMiddleware.RequirePermission("mod", "delete"))
 
+	// Game Server routes
+	gameServerHandler := handlers.NewGameServerHandler(deps.DB)
+	gameServers := api.Group("/game-servers")
+	gameServers.GET("", gameServerHandler.List, permMiddleware.RequirePermission("game_server", "read"))
+	gameServers.POST("", gameServerHandler.Create, permMiddleware.RequirePermission("game_server", "create"))
+	gameServers.GET("/:slug", gameServerHandler.Get, permMiddleware.RequirePermission("game_server", "read"))
+	gameServers.PUT("/:slug", gameServerHandler.Update, permMiddleware.RequirePermission("game_server", "update"))
+	gameServers.DELETE("/:slug", gameServerHandler.Delete, permMiddleware.RequirePermission("game_server", "delete"))
+
 	return e
+
 }

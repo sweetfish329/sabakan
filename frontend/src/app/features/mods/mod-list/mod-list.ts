@@ -1,12 +1,11 @@
-import { Component, inject, signal, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { Component, inject, signal, type OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { MatCardModule } from "@angular/material/card";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
-import { ModService } from "../../../services/mod.service";
-import type { Mod } from "../../../services/mod.service";
+import { ModService, type Mod } from "../../../services/mod.service";
 
 /**
  * Component displaying a list of mods.

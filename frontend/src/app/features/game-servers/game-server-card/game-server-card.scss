@@ -1,0 +1,110 @@
+.game-server-card {
+  margin: 8px;
+  min-width: 320px;
+  max-width: 400px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: var(--glass-border);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--glass-shadow);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--glass-shadow-hover);
+  }
+
+  &.running {
+    border-left: 4px solid #4caf50;
+  }
+
+  &.stopped {
+    border-left: 4px solid #9e9e9e;
+  }
+
+  &.creating {
+    border-left: 4px solid #2196f3;
+  }
+
+  &.error {
+    border-left: 4px solid #f44336;
+  }
+}
+
+.game-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: var(--mat-sys-primary);
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.status-chip {
+  text-transform: capitalize;
+
+  &.running {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  &.stopped {
+    background-color: #f5f5f5;
+    color: #616161;
+  }
+
+  &.creating {
+    background-color: #e3f2fd;
+    color: #1565c0;
+  }
+
+  &.error {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+}
+
+.status-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  margin-right: 4px;
+}
+
+.image-text {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.75rem;
+  font-family: monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.description {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.875rem;
+  margin: 8px 0;
+}
+
+.ports-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, 0.6);
+  flex-wrap: wrap;
+}
+
+.port-badge {
+  background-color: #e8eaf6;
+  color: #3f51b5;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-family: monospace;
+}

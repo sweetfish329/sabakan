@@ -1,11 +1,5 @@
- 
- 
- 
- 
- 
 import type { Meta, StoryObj } from "@storybook/angular";
-import type { InfoItem } from "./info-card";
-import { InfoCardComponent } from "./info-card";
+import { InfoCardComponent, type InfoItem } from "./info-card";
 
 const containerInfo: InfoItem[] = [
   { label: "Container ID", value: "abc123def456789", monospace: true },

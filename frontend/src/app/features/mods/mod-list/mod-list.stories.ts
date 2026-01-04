@@ -1,5 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/angular";
-import { applicationConfig } from "@storybook/angular";
+import { applicationConfig, type Meta, type StoryObj } from "@storybook/angular";
 import { provideRouter } from "@angular/router";
 import { provideHttpClient } from "@angular/common/http";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";

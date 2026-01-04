@@ -27,9 +27,9 @@
 ## Current Status
 
 - ✅ **Container Management** - Start/Stop/List functionality (Backend & Frontend)
-- 🏗️ **Authentication** - Backend handlers & models implemented (JWT + Redis); Frontend integration pending
-- 🏗️ **RBAC** - Data models defined; Policy enforcement pending
-- 🏗️ **Mod Management** - Data models defined; API & UI pending
+- ✅ **Authentication** - Backend (JWT + Redis) & Frontend (Login/Register, Guards, Interceptor)
+- ✅ **RBAC** - Middleware implemented & applied to all API routes
+- 🏗️ **Mod Management** - API implemented; UI pending
 - 🏗️ **Audit Logging** - Data models defined
 
 ## Roadmap
@@ -37,12 +37,12 @@
 - [x] Basic Container Operations (List, Start, Stop)
 - [x] User & Role Database Models
 - [x] Authentication API (Login, Register, Refresh)
-- [ ] Frontend Authentication UI (Login Page, Guards)
-- [ ] Role Based Access Control (RBAC) Middleware
-- [ ] Mod Management System
+- [x] Frontend Authentication UI (Login Page, Guards)
+- [x] Role Based Access Control (RBAC) Middleware
+- [ ] Game Server Creation Flow
+- [ ] Mod Management UI
 - [ ] World Map Integration (WebMAP)
 - [ ] Discord/Webhook Integration
-
 
 ## Tech Stack
 
@@ -62,6 +62,7 @@
 podman compose up
 
 # アクセス
+
 # - Frontend: http://localhost:4200
 # - Backend API: http://localhost:1323
 ```

@@ -1,0 +1,51 @@
+<div class="game-server-list-page">
+  <mat-toolbar color="primary" class="page-toolbar">
+    <mat-icon>sports_esports</mat-icon>
+    <span>Game Servers</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="loadServers()" [disabled]="loading()" matTooltip="Refresh">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button mat-fab extended color="accent" (click)="onCreate()">
+      <mat-icon>add</mat-icon>
+      New Server
+    </button>
+  </mat-toolbar>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (error()) {
+    <div class="error-banner">
+      <mat-icon>error</mat-icon>
+      <span>{{ error() }}</span>
+      <button mat-button (click)="loadServers()">Retry</button>
+    </div>
+  }
+
+  <div class="server-grid">
+    @for (server of servers(); track server.slug) {
+      <app-game-server-card
+        [server]="server"
+        [loading]="loadingIds().has(server.slug)"
+        (startClicked)="onStart($event)"
+        (stopClicked)="onStop($event)"
+        (detailsClicked)="onViewDetails($event)"
+        (deleteClicked)="onDelete($event)"
+      />
+    } @empty {
+      @if (!loading()) {
+        <div class="empty-state">
+          <mat-icon class="empty-icon">dns</mat-icon>
+          <h2>No Game Servers</h2>
+          <p>You haven't created any game servers yet.</p>
+          <button mat-raised-button color="primary" (click)="onCreate()">
+            <mat-icon>add</mat-icon>
+            Create Your First Server
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

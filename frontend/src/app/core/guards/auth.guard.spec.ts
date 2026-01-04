@@ -1,7 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import type { Mock } from "vitest";
+import { describe, it, expect, beforeEach, vi, type Mock } from "vitest";
 
 import { AuthService } from "../../services/auth.service";
 import { authGuard } from "./auth.guard";

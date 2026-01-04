@@ -1,0 +1,55 @@
+<mat-card class="game-server-card" [class]="statusClass()">
+  <mat-card-header>
+    <mat-icon mat-card-avatar class="game-icon">{{ gameType() === 'minecraft' ? 'sports_esports' : 'dns' }}</mat-icon>
+    <mat-card-title>{{ server().name }}</mat-card-title>
+    <mat-card-subtitle>{{ server().slug }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="status-row">
+      <mat-chip [class]="'status-chip ' + server().status">
+        <mat-icon class="status-icon">{{ statusIcon() }}</mat-icon>
+        {{ server().status }}
+      </mat-chip>
+      <span class="image-text">{{ server().image }}</span>
+    </div>
+
+    @if (server().description) {
+      <p class="description">{{ server().description }}</p>
+    }
+
+    @if (server().ports.length > 0) {
+      <div class="ports-row">
+        <mat-icon>lan</mat-icon>
+        <span class="ports-text">
+          @for (port of server().ports; track port.containerPort) {
+            <span class="port-badge">{{ port.hostPort }}:{{ port.containerPort }}/{{ port.protocol }}</span>
+          }
+        </span>
+      </div>
+    }
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    @if (loading()) {
+      <mat-spinner diameter="24"></mat-spinner>
+    } @else {
+      @if (canStart()) {
+        <button mat-icon-button color="primary" matTooltip="Start" (click)="onStart()">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+      }
+      @if (canStop()) {
+        <button mat-icon-button color="warn" matTooltip="Stop" (click)="onStop()">
+          <mat-icon>stop</mat-icon>
+        </button>
+      }
+      <button mat-icon-button matTooltip="View Details" (click)="onViewDetails()">
+        <mat-icon>info</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" matTooltip="Delete" (click)="onDelete()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    }
+  </mat-card-actions>
+</mat-card>
